@@ -4,6 +4,11 @@ const fs = require('fs');
 const JsonDataHandler = require('./jsonModel');
 const app = express();
 const port = 3000;
+const ejs = require('ejs');
+
+app.set('view engine', 'ejs');
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Set up multer for file uploads
 const storage = multer.memoryStorage(); // You can also use 'diskStorage' for saving to disk
@@ -21,7 +26,10 @@ const upload = multer({ storage: storage,
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/upload.html');
 });
-
+// app.get('/upload', (req, res) => {
+//     // Load and send the HTML file as a response
+//     res.sendFile(__dirname + '/download.html');
+// });
 // Handle file upload
 app.post('/upload', upload.single('jsonFile'), (req, res) => {
     if (!req.file) {
@@ -33,11 +41,15 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
         const json = JSON.parse(req.file.buffer.toString());
         //console.log('Uploaded JSON:',json);
         //res.send('File uploaded and parsed successfully.');
-        const jsonDataHandler = new JsonDataHandler(json);
-         let cit=jsonDataHandler.printSpecificItems();
-
-         res.status(200).write(cit[0].toString() + '\n');
-         res.end();
+            const jsonDataHandler = new JsonDataHandler(json);
+                let cit=jsonDataHandler.printSpecificItems();
+                res.render('download',{cit});
+                //res.sendFile(__dirname +'/download.ejs');
+                //res.status(200).write(cit[0].toString() + '\n');
+                
+         //res.status(200).write(cit[0].toString() + '\n');
+         //res.sendFile(__dirname + '/download.html');
+                // res.end();
        // res.status(200).send(cit.toString()+'\n');
             //console.log(jsonDataHandler);
             //res.status(200).send(jsonDataHandler.printSpecificItems());
@@ -48,7 +60,6 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
         res.status(500).send('Error parsing JSON.');
     }
 });
-
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
