@@ -5,10 +5,15 @@
 </head>
 <body>
     <div class="container">
-    <h1>JSON Data:</h1>
+    <h1>Unofficial JSON Data of the First Object:</h1>
     <pre><%= cit[0].toString() %></pre>
+    <h1>First Names of the Defendants</h1>
+    <% itemsArray.forEach(function(item) { %>
+        <div><%= item.trim() %></div>
+      <% }); %>
     <button id="downloadButton">Download Excel</button>
 </div>
-    <script src="script.js"></script>
+    <script src="script.js">
+    </script>
 </body>
 </html>
