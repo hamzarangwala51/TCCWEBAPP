@@ -36,34 +36,57 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
         return res.status(400).send('No file uploaded.');
     }
 
+
     // Convert the uploaded file buffer to a JSON object
     try {
         const json = JSON.parse(req.file.buffer.toString());
+        console.log(req.file.originalname);
             const jsonDataHandler = new JsonDataHandler(json);
                 let cit=jsonDataHandler.printSpecificItems();
                 let tempName=jsonDataHandler.printSpecificNames();
-                var firstName = [];
-                var lastName = [];
-                var result = [];
-                var newNames = tempName.toString().replaceAll(", ", ",");
-                    var fullName = newNames.split(',');
-                    fullName.forEach(name => {
-                    let splitted = name.split(/v\.La Reine|v\. The Queen|v\. M.N.R|c\. M.N.R|v\. M.R.N.|c\. M.R.N.|v\. MNR|c\.  MNR|c\. La Reine|c\. The Queen/);
-                    firstName.push(splitted[0]);
-                    lastName.push(splitted[splitted.length-1]);
-                    });
-                    f_name_list = firstName.toString().split(", ");
-                    l_name_list = lastName.toString().split(", ");
+                let TestFirstName=jsonDataHandler.printSpecificItems();
+                    const extractedStrings = [];
+                    const pattern = /BETWEEN:\s*\n(.+?),/;
+                        // Extract the text property from the object
 
-                    for (let i = 0; i < f_name_list.length; i++) {
-                        result.push({ 
-                          firstname: f_name_list[i],
-                          lastname: l_name_list[i]
-                        });
-                      }
+                        // Use regular expressions to find and store matching strings in the array
+                       // const matches = TestFirstName[0].match(pattern);
+                        TestFirstName.forEach((text) => {
+                            const match = text.match(pattern);
+                            if (match) {
+                              extractedStrings.push(match[1]);
+                            }
+                          });
+                          let JsonFilename = req.file.originalname;
+                          
+                       console.log(extractedStrings.length.toString());
+                       
+                
 
-                      const itemsArray =result[0].firstname.split(',');
-                      const temp = {itemsArray,cit};
+                // var firstName = [];
+                // var lastName = [];
+                // var result = [];
+                // var newNames = tempName.toString().replaceAll(", ", ",");
+                //     var fullName = newNames.split(',');
+                //     fullName.forEach(name => {
+                //     let splitted = name.split(/v\.La Reine|v\. The Queen|v\.The Queen|v\. M.N.R|c\. M.N.R|v\. M.R.N.|c\. M.R.N.|v\. MNR|c\.  MNR|c\. La Reine|c\. The Queen/);
+                //     firstName.push(splitted[0]);
+                //     lastName.push(splitted[splitted.length-1]);
+                //     });
+                //     f_name_list = firstName.toString().split(", ");
+                //     l_name_list = lastName.toString().split(", ");
+
+                //     for (let i = 0; i < f_name_list.length; i++) {
+                //         result.push({ 
+                //           firstname: f_name_list[i],
+                //           lastname: l_name_list[i]
+                //         });
+                //       }
+                  
+                //       //const filename = req.file.originalname;
+                //       const itemsArray =result[0].firstname.split(',');
+                      //console.log(itemsArray.toString());
+                      const temp = {extractedStrings,cit,JsonFilename};
                 res.render('download',temp);
 
                 //res.sendFile(__dirname +'/download.ejs');
