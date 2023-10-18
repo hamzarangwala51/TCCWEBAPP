@@ -46,7 +46,11 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                 let tempName=jsonDataHandler.printSpecificNames();
                 let TestFirstName=jsonDataHandler.printSpecificItems();
                     const extractedStrings = [];
+                    const corpnames =[];
                     const pattern = /BETWEEN:\s*\n(.+?),/;
+                    //const patternFrench =/ENTRE\s*:\s*\n(.+?),/;
+                    const corporationPattern = /\b(?:Inc\.|INC\.|Corp\.|Ltd\.|LTD\.|LLC)\.?$/i;
+                    
                         // Extract the text property from the object
 
                         // Use regular expressions to find and store matching strings in the array
@@ -54,9 +58,16 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                         TestFirstName.forEach((text) => {
                             const match = text.match(pattern);
                             if (match) {
-                              extractedStrings.push(match[1]);
+                                const isCorporation =corporationPattern.test(match[1]);
+                                if(isCorporation){
+                                    corpnames.push(match[1]);
+                                }else{
+                                    extractedStrings.push(match[1]);
+                                }
                             }
                           });
+                         
+                        console.log(corpnames.length);
                           let JsonFilename = req.file.originalname;
                           
                        console.log(extractedStrings.length.toString());
@@ -86,7 +97,7 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                 //       //const filename = req.file.originalname;
                 //       const itemsArray =result[0].firstname.split(',');
                       //console.log(itemsArray.toString());
-                      const temp = {extractedStrings,cit,JsonFilename};
+                      const temp = {extractedStrings,cit,JsonFilename,corpnames};
                 res.render('download',temp);
 
                 //res.sendFile(__dirname +'/download.ejs');

@@ -11,6 +11,10 @@
     <% extractedStrings.forEach(function(item) { %>
         <div><%= item.trim() %></div>
       <% }); %>
+      <h1>NAMES OF CORPORATIONS:</h1>
+      <% corpnames.forEach(function(item) { %>
+        <div><%= item.trim() %></div>
+      <% }); %>
     <button id="downloadButton">Download Excel</button>
 </div>
     <script src="script.js">
