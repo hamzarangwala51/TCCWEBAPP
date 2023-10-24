@@ -2,21 +2,52 @@
 <html>
 <head>
     <title>Excel Download</title>
+    <style>
+      .container {
+          display:flex; /* Use flexbox to arrange elements side by side */
+      }
+
+      .div1, .div2,.div3 {
+          width: 50%; /* Set the width to 50% to make them equal in size */
+          padding: 10px;
+          justify-content: center;
+          align-items: center;
+      }
+      .align{
+        align-items: center;
+        padding-left: 30px;
+      }
+  </style>
 </head>
 <body>
-    <div class="container">
     <h1>Unofficial_text JSON Data of the First Object:</h1>
     <pre><%= cit[0].toString() %></pre>
-    <h1>First Names of the Defendants <%= JsonFilename.toString()%> File:</h1>
-    <% extractedStrings.forEach(function(item) { %>
-        <div><%= item.trim() %></div>
+    <div class="container">
+      <div class="div1">
+    <h1>Name of Applelants <%= JsonFilename.toString()%> File:</h1>
+            <% extractedStrings.forEach(function(item) { %>
+              <div>
+                <%= item.trim().toString() %>
+              </div>
+            <% }); %>
+   
+      </div>
+        <div class="div2">
+      <h1>Name Of Judges:</h1>
+      <% Judgnames.forEach(function(item) { %>
+        <div><%= item.trim().toString() %></div>
       <% }); %>
-      <h1>NAMES OF CORPORATIONS:</h1>
-      <% corpnames.forEach(function(item) { %>
-        <div><%= item.trim() %></div>
-      <% }); %>
+        </div>
+        <div class="div3">
+          <h1>Year:</h1>
+          <% yearOfCase.forEach(function(item) { %>
+            <div class="align">
+              <%=item.trim().toString() %></div>
+          <% }); %>
+            </div>
+
+    </div>
     <button id="downloadButton">Download Excel</button>
-</div>
     <script src="script.js">
     </script>
 </body>

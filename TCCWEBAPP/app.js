@@ -43,36 +43,91 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
         console.log(req.file.originalname);
             const jsonDataHandler = new JsonDataHandler(json);
                 let cit=jsonDataHandler.printSpecificItems();
-                let tempName=jsonDataHandler.printSpecificNames();
                 let TestFirstName=jsonDataHandler.printSpecificItems();
+                let JudgeNames = jsonDataHandler.printSpecificItems();
                     const extractedStrings = [];
-                    const corpnames =[];
+                    const appeleantnames =[];
+                    const yearOfCase =[];
+                    const Judgnames = [];
                     const pattern = /BETWEEN:\s*\n(.+?),/;
+                    const patternTEST = /BETWEEN:\s*\n(.*?)\n/;
+                    //const patternTEST = /BETWEEN:\s*\n([^,]+)/;
                     //const patternFrench =/ENTRE\s*:\s*\n(.+?),/;
                     const corporationPattern = /\b(?:Inc\.|INC\.|Corp\.|Ltd\.|LTD\.|LLC)\.?$/i;
+                    const JudgPattern=/\n(?:By|Before|BEFORE): The Honourable (Judge|Justice|Deputy Judge)? ([^\n]+)\n/i;
+                    const patternForJUD = /(\nBY:\s*\n(.*?)\n|\nBEFORE[\s\S]*?\n|\nBefore[\s\S]*?\n|\nBy[\s\S]*?\n)/;
+                   // const JuduPattern = /\n(?:Before|BEFORE|By):\s*The Honourable (?:Judge|Justice|Deputy Judge)? ([^\n]+)/i
+
+
+                    const judgePattern = /\n(?:BEFORE|By): The Honourable [^\n]+,\n/gi;
+                    const JudPattern = /\n(By|Before): The Honourable (Judge|Justice|Deputy Judge|Associate Chief Judge)?([^\n,]+)\n/i
                     
                         // Extract the text property from the object
 
                         // Use regular expressions to find and store matching strings in the array
                        // const matches = TestFirstName[0].match(pattern);
-                        TestFirstName.forEach((text) => {
-                            const match = text.match(pattern);
+                       json.forEach((text)=>{
+                            const match = text.unofficial_text.match(patternTEST);
                             if (match) {
                                 const isCorporation =corporationPattern.test(match[1]);
                                 if(isCorporation){
-                                    corpnames.push(match[1]);
+                                    extractedStrings.push(match[1]);
                                 }else{
                                     extractedStrings.push(match[1]);
                                 }
+                            }else{
+                                extractedStrings.push("Not Found");
                             }
+                            // else{
+                            //     //console.log(text.name.toString());
+                            // }
+                       });
+                    //    TestFirstName.forEach((text) => {
+                    //     const match = text.match(pattern);
+                    //     if (match) {
+                    //         const isCorporation =corporationPattern.test(match[1]);
+                    //         if(isCorporation){
+                    //             corpnames.push(match[1]);
+                    //         }else{
+                    //             extractedStrings.push(match[1]);
+                    //         }
+                    //     }
+                    //   });
+                            json.forEach((item)=>{
+                                    const year = item.year.toString();
+                                    if(item.year!=null){
+                                    yearOfCase.push(year);
+                                }else{
+                                    yearOfCase.push("Year not Found");
+                                }
+                            });
+                       
+                            json.forEach((item)=>{
+                               const object=patternForJUD.exec(item.unofficial_text);  
+                               if(object!=null && object){  
+                               const match = object[0].match(JudPattern);
+                                if(match){
+                                    //Judgnames.push(object[0]);
+                                    Judgnames.push(match[3]);
+                                }else{
+                                    Judgnames.push("JudgeName Not Found ")
+                                   // console.log(item.name.toString());
+                                }
+                            }else{
+                                Judgnames.push("JudgeName Not Found ")
+                            }
+                          
                           });
-                         
-                        console.log(corpnames.length);
+                    
+                          console.log(extractedStrings.length.toString());
+                            //console.log(corpnames.length);
+                            //console.log(cit.length);
+                            console.log(Judgnames.length);  
                           let JsonFilename = req.file.originalname;
                           
-                       console.log(extractedStrings.length.toString());
+                      
                        
-                
+                     
 
                 // var firstName = [];
                 // var lastName = [];
@@ -97,7 +152,7 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                 //       //const filename = req.file.originalname;
                 //       const itemsArray =result[0].firstname.split(',');
                       //console.log(itemsArray.toString());
-                      const temp = {extractedStrings,cit,JsonFilename,corpnames};
+                      const temp = {extractedStrings,cit,JsonFilename,Judgnames,yearOfCase};
                 res.render('download',temp);
 
                 //res.sendFile(__dirname +'/download.ejs');
