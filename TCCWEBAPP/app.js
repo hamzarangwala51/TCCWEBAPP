@@ -5,6 +5,7 @@ const JsonDataHandler = require('./jsonModel');
 const app = express();
 const port = 3000;
 const ejs = require('ejs');
+const { match } = require('assert');
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -56,6 +57,7 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                     const corporationPattern = /\b(?:Inc\.|INC\.|Corp\.|Ltd\.|LTD\.|LLC)\.?$/i;
                     const JudgPattern=/\n(?:By|Before|BEFORE): The Honourable (Judge|Justice|Deputy Judge)? ([^\n]+)\n/i;
                     const patternForJUD = /(\nBY:\s*\n(.*?)\n|\nBEFORE[\s\S]*?\n|\nBefore[\s\S]*?\n|\nBy[\s\S]*?\n)/;
+                    const patternifNamenotFound = /\nREASONS FOR JUDGMENT BY:\nThe Honourable (Judge|Justice|Deputy Judge|Associate Chief Judge)? (.*?)\n/i;;
                    // const JuduPattern = /\n(?:Before|BEFORE|By):\s*The Honourable (?:Judge|Justice|Deputy Judge)? ([^\n]+)/i
 
 
@@ -110,11 +112,17 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                                     //Judgnames.push(object[0]);
                                     Judgnames.push(match[3]);
                                 }else{
-                                    Judgnames.push("JudgeName Not Found ")
+                                    Judgnames.push(object[0]);
                                    // console.log(item.name.toString());
                                 }
                             }else{
-                                Judgnames.push("JudgeName Not Found ")
+                                const obj =item.unofficial_text.match(patternifNamenotFound);
+                                if(obj){
+                                    Judgnames.push(obj[2]);
+                                }else{
+                                    Judgnames.push("JudgeName Not Found in Pattern also ")
+                                }
+                                //Judgnames.push("JudgeName Not Found in Object")
                             }
                           
                           });
