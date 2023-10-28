@@ -57,12 +57,20 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                     const corporationPattern = /\b(?:Inc\.|INC\.|Corp\.|Ltd\.|LTD\.|LLC)\.?$/i;
                     const JudgPattern=/\n(?:By|Before|BEFORE): The Honourable (Judge|Justice|Deputy Judge)? ([^\n]+)\n/i;
                     const patternForJUD = /(\nBY:\s*\n(.*?)\n|\nBEFORE[\s\S]*?\n|\nBefore[\s\S]*?\n|\nBy[\s\S]*?\n)/;
-                    const patternifNamenotFound = /\nREASONS FOR JUDGMENT BY:\nThe Honourable (Judge|Justice|Deputy Judge|Associate Chief Judge)? (.*?)\n/i;;
+                    const patternifNamenotFound = /\nREASONS FOR JUDGMENT BY:\nThe Honourable(?: (Judge|Justice|Deputy Judge|Associate Chief Judge))? (.*?)\n/i;
+
+
+
+                   // const patternifNamenotFound = /\nREASONS FOR JUDGMENT BY:\nThe Honourable (Judge|Justice|Deputy Judge|Associate Chief Judge)? (.*?)\n/i;;
                    // const JuduPattern = /\n(?:Before|BEFORE|By):\s*The Honourable (?:Judge|Justice|Deputy Judge)? ([^\n]+)/i
 
 
                     const judgePattern = /\n(?:BEFORE|By): The Honourable [^\n]+,\n/gi;
-                    const JudPattern = /\n(By|Before): The Honourable (Judge|Justice|Deputy Judge|Associate Chief Judge)?([^\n,]+)\n/i
+                    
+                    const JudPattern = /\n(By|Before): The Honourable (Judge|Justice|Deputy Judge|Associate Chief Judge)?([^\n,]+)\n/i;
+
+
+                    const judgeNamePattern = /The Honourable(?: (Judge|Justice|Deputy Judge|Associate Chief Judge))? (.*?)\n/;
                     
                         // Extract the text property from the object
 
@@ -112,15 +120,28 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                                     //Judgnames.push(object[0]);
                                     Judgnames.push(match[3]);
                                 }else{
-                                    Judgnames.push(object[0]);
+                                    const judgeNamePattern = /(?:By|Before): The Honourable (.*?)\s*,/;
+                                        const match1=object[1].match(judgeNamePattern);
+                                        if (match1 && match1[1]) {
+                                            Judgnames.push(match1[1]);
+                                    }else{
+                                    Judgnames.push(object[1]);
+                                }
                                    // console.log(item.name.toString());
                                 }
                             }else{
                                 const obj =item.unofficial_text.match(patternifNamenotFound);
                                 if(obj){
                                     Judgnames.push(obj[2]);
-                                }else{
-                                    Judgnames.push("JudgeName Not Found in Pattern also ")
+                                }
+                                else{
+                                    const mat = item.unofficial_text.match(judgeNamePattern);
+                                    if(mat){
+                                        Judgnames.push(mat[2])
+                                    }else{
+                                         Judgnames.push("JudgeName Not Found in Pattern also ")
+                                    }
+                                    //Judgnames.push("JudgeName Not Found in Pattern also ")
                                 }
                                 //Judgnames.push("JudgeName Not Found in Object")
                             }
