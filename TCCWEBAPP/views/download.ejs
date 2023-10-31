@@ -22,6 +22,10 @@
 <body>
     <h1>Unofficial_text JSON Data of the First Object:</h1>
     <pre><%= cit[0].toString() %></pre>
+
+    <h1>Response of the Unofficial_text JSON Data of the First Object:</h1>
+    <pre><%= ResponseFromAi.toString() %></pre>
+
     <div class="container">
       <div class="div1">
     <h1>Name of Applelants <%= JsonFilename.toString()%> File:</h1>
@@ -47,7 +51,9 @@
             </div>
 
     </div>
-    <button id="downloadButton">Download Excel</button>
+    <button id="downloadButton">
+      <a href="/download-excel?excelFileName=<%= excelFileName %>">Download Excel</a>
+      </button>
     <script src="script.js">
     </script>
 </body>
