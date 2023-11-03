@@ -1,15 +1,15 @@
 const fs = require('fs');
 const XLSX = require('xlsx');
 
-function getExcelFunc(rowData, yearData) {
+function getExcelFunc(judgeData, yearData,appeleantnames) {
   // Combine rowData and yearData into a single array
-  const combinedData = rowData.map((data, index) => [data, yearData[index]]);
+  const combinedData = judgeData.map((data, index) => [data,appeleantnames[index], yearData[index]]);
 
   // Create a new workbook
   const workbook = XLSX.utils.book_new();
 
   // Create a new worksheet from the combined data
-  const worksheet = XLSX.utils.aoa_to_sheet([['Data', 'Year'], ...combinedData]);
+  const worksheet = XLSX.utils.aoa_to_sheet([['Judges Names','Appeleant Names','Year'], ...combinedData]);
 
   // Add the worksheet to the workbook
   XLSX.utils.book_append_sheet(workbook, worksheet, 'CombinedDataSheet');

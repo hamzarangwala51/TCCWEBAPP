@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Excel Download</title>
+    <title>Download Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
       .container {
           display:flex; /* Use flexbox to arrange elements side by side */
@@ -17,11 +18,23 @@
         align-items: center;
         padding-left: 30px;
       }
+      .download-btn{
+            display: flex;
+            justify-content: center; /* Horizontally center the content */
+            align-items: center; /* Vertically center the content */
+            height: 10vh;  
+      }
+      .large-button {
+            width: 200px; /* Set the desired width for the button */
+            height: 40px; /* Set the desired height for the button */
+            font-size: 18px;
+            margin-left: 10px;  /* Optionally adjust the font size */
+        }
   </style>
 </head>
 <body>
     <h1>Unofficial_text JSON Data of the First Object:</h1>
-    <pre><%= cit[0].toString() %></pre>
+    <pre><%= cit[1].toString() %></pre>
 
     <h1>Response of the Unofficial_text JSON Data of the First Object:</h1>
     <pre><%= ResponseFromAi.toString() %></pre>
@@ -51,10 +64,25 @@
             </div>
 
     </div>
-    <button id="downloadButton">
-      <a href="/download-excel?excelFileName=<%= excelFileName %>">Download Excel</a>
+    <div class="download-btn">   
+       <button id="downloadButton"class="large-button">
+      <a href="/download-excel?excelFileName=<%= excelFileName %>" style="color: black; text-decoration: none;">Download Excel
+        <i class="fas fa-download"></i>
+      </a>
       </button>
+    </div>
+
     <script src="script.js">
     </script>
 </body>
 </html>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const downloadLink = document.getElementById("downloadButton");
+  
+      downloadLink.addEventListener("click", function () {
+          // You can replace this alert with a more user-friendly notification
+          alert("Your <%= excelFileName%> file is being downloaded... Please check your downloads folder.");
+      });
+  });
+  </script>

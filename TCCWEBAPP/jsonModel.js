@@ -3,17 +3,18 @@ class JsonDataHandler {
         this.data = data;
     }
 
-    printSpecificItems() {
+    printSpecificItems(){
         const cits =[];
         for (const item of this.data) {
            // let cit = ("name",item.name);
              let cit = ("unofficail_text",item.unofficial_text);
-                cits.push(cit);
+               cits.push(cit);
             // console.log("Name:", item.name);
             // console.log("Year:", item.year);
             // // Add more properties as needed.
             // console.log(); // Add a line break for readability.
         }
+
         return cits;
    
     }

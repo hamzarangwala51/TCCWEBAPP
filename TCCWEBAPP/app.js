@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 const ejs = require('ejs');
 const { match } = require('assert');
-
+let uploadedFile;
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -35,14 +35,30 @@ app.get('/', (req, res) => {
 //     res.sendFile(__dirname + '/download.html');
 // });
 // Handle file upload
-app.post('/upload', upload.single('jsonFile'), (req, res) => {
+app.get('/loading', (req, res) => {
+    res.render('loading');
+});
+
+const storeUploadedFile = (req, res, next) => {
+    uploadedFile = req.file;
+    next(); // Continue to the next middleware or route
+};
+app.post('/upload', upload.single('jsonFile'),storeUploadedFile, (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
+    res.redirect('/loading');
     // Convert the uploaded file buffer to a JSON object
+   
+});
+app.get('/results', (req, res) => {
+    if (!uploadedFile) {
+        return res.status(400).send('No file uploaded.');
+    }
+
     try {
-        const json = JSON.parse(req.file.buffer.toString());
-        console.log(req.file.originalname);
+        const json = JSON.parse(uploadedFile.buffer.toString());
+        console.log(uploadedFile.originalname);
             const jsonDataHandler = new JsonDataHandler(json);
                 let cit=jsonDataHandler.printSpecificItems();
                 let TestFirstName=jsonDataHandler.printSpecificItems();
@@ -153,11 +169,8 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                           //console.log(corpnames.length);
                           //console.log(cit.length);
                           console.log(Judgnames.length);  
-                        let JsonFilename = req.file.originalname;
-                        
-                    
-                                 const promises = [
-                                    // generateResponse(cit[0]+("can you predict that case was won/lost/partially win in one line?"),"What type of case is this GST/HST/IncomeTax/excise?")
+                                 const promises = [ 
+                                    // generateResponse(("Please tell me these features: Winning/Losing/Partially Winning, How many years did the case take?, Name of the Judge, Name of the Appellant, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation)Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named:")+cit[1].toString())
                                     // .then(response => {
                                     //    ResponseFromAi.push(response.toString());
                                     //   console.log('Result:', response);
@@ -165,16 +178,20 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                                     // .catch(err => {
                                     //   console.error('Error:', err);
                                     // }),
-                                     
                                      ];
-                                    
-                                    
-                                Promise.all(promises)
-                                .then(results => {
-                                        const excelFileName = getExcelFunc(Judgnames,yearOfCase);
-                                    console.log(ResponseFromAi);
-                                      const temp = {extractedStrings,cit,JsonFilename,Judgnames,yearOfCase,ResponseFromAi,excelFileName};
-                                         res.render('download',temp);
+                                
+                                
+                                   
+                               
+                             Promise.all(promises)
+                                .then(
+                                    results => {
+                                        const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
+                                        console.log(ResponseFromAi);
+                                        const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName};
+                                        res.render('download',temp);
+                                
+                                         
                                  
                                   // All promises have resolved, and results is an array of their resolved values
                                   //console.log('All promises have resolved:', results);
@@ -183,6 +200,7 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
                                   // Handle any errors that occur during the promises
                                   console.error('An error occurred:', error);
                                 });
+
                                 
                                                          
                           
@@ -230,7 +248,16 @@ app.post('/upload', upload.single('jsonFile'), (req, res) => {
         console.error('Error parsing JSON:', error);
         res.status(500).send('Error parsing JSON.');
     }
+    
+    // You can render your results page here and pass any required data
+    // Example: res.render('results', { data: resultsData });
+    // Adjust this based on your actual results handling logic
+    // You can also send a download link to the Excel file on this page
 });
+
+
+
+
 app.get('/download-excel', (req, res) => {
     // Generate the Excel file (similar to your existing code for generating the Excel file)
   
