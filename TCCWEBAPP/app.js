@@ -16,13 +16,11 @@ app.use(express.urlencoded({ extended: false }));
 
 // Set up multer for file uploads
 const storage = multer.memoryStorage(); // You can also use 'diskStorage' for saving to disk
-const upload = multer({ storage: storage,
+const upload = multer({
+    storage,
     fileFilter: (req, file, callback) => {
-        if (file.mimetype === 'application/json') {
-            callback(null, true);
-        } else {
-            callback(new Error('Only JSON files are allowed.'));
-        }
+        const allowed = file.mimetype === 'application/json';
+        callback(null, allowed);
     }
 });
 
@@ -51,23 +49,36 @@ app.post('/upload', upload.single('jsonFile'),storeUploadedFile, (req, res) => {
     // Convert the uploaded file buffer to a JSON object
    
 });
-app.get('/results', (req, res) => {
+app.get('/results', async (req, res) => {
     if (!uploadedFile) {
         return res.status(400).send('No file uploaded.');
     }
-
     try {
         const json = JSON.parse(uploadedFile.buffer.toString());
         console.log(uploadedFile.originalname);
             const jsonDataHandler = new JsonDataHandler(json);
+            const ResponseFromAi = [];
+            const Questions="Please tell me these features: Winning/Losing/Partially Winning, How many years did the case take?, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation)Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named:";
                 let cit=jsonDataHandler.printSpecificItems();
+                let InputArray = [cit[2]+Questions];
+                const response =  await generateResponse(InputArray);
+                 ResponseFromAi.push(response.toString());
+                // const promises = [ 
+                    
+                //     .then(response => {
+                //        ResponseFromAi.push(response.toString());
+                //       console.log('Result:', response);
+                //     })
+                //     .catch(err => {
+                //       console.error('Error:', err);
+                //     }),
+                //      ];
                 let TestFirstName=jsonDataHandler.printSpecificItems();
                 let JudgeNames = jsonDataHandler.printSpecificItems();
                     const extractedStrings = [];
                     const appeleantnames =[];
                     const yearOfCase =[];
                     const Judgnames = [];
-                    const ResponseFromAi = [];
                     const pattern = /BETWEEN:\s*\n(.+?),/;
                     const patternTEST = /BETWEEN:\s*\n(.*?)\n/;
                     //const patternTEST = /BETWEEN:\s*\n([^,]+)/;
@@ -169,41 +180,33 @@ app.get('/results', (req, res) => {
                           //console.log(corpnames.length);
                           //console.log(cit.length);
                           console.log(Judgnames.length);  
-                                 const promises = [ 
-                                    // generateResponse(("Please tell me these features: Winning/Losing/Partially Winning, How many years did the case take?, Name of the Judge, Name of the Appellant, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation)Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named:")+cit[1].toString())
-                                    // .then(response => {
-                                    //    ResponseFromAi.push(response.toString());
-                                    //   console.log('Result:', response);
-                                    // })
-                                    // .catch(err => {
-                                    //   console.error('Error:', err);
-                                    // }),
-                                     ];
-                                
-                                
-                                   
+                                 
+                                    
                                
-                             Promise.all(promises)
-                                .then(
-                                    results => {
-                                        const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
-                                        console.log(ResponseFromAi);
-                                        const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName};
-                                        res.render('download',temp);
+                            //  Promise.all(promises)
+                            //     .then(
+                            //         results => {
+                            //             const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
+                            //             console.log(ResponseFromAi);
+                            //             const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName};
+                            //             res.render('download',temp);
                                 
                                          
                                  
-                                  // All promises have resolved, and results is an array of their resolved values
-                                  //console.log('All promises have resolved:', results);
-                                })
-                                .catch(error => {
-                                  // Handle any errors that occur during the promises
-                                  console.error('An error occurred:', error);
-                                });
+                            //       // All promises have resolved, and results is an array of their resolved values
+                            //       //console.log('All promises have resolved:', results);
+                            //     })
+                            //     .catch(error => {
+                            //       // Handle any errors that occur during the promises
+                            //       console.error('An error occurred:', error);
+                            //     });
 
                                 
                                                          
-                          
+                                const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
+                                console.log(ResponseFromAi);
+                                const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName};
+                                res.render('download',temp);
 
                 // var firstName = [];
 
