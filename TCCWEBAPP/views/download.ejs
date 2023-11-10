@@ -41,18 +41,19 @@
 
     <div class="container">
       <div class="div1">
-    <h1>Name of Applelants <%= JsonFilename.toString()%> File:</h1>
-            <% extractedStrings.forEach(function(item) { %>
-              <div>
-                <%= item.trim().toString() %>
-              </div>
-            <% }); %>
-   
+        <h1>Name of Applicants <%= JsonFilename.toString() %> File:</h1>
+        <% extractedStrings.forEach(function(item, index) { %>
+          <div>
+            <%= (index + 1) + '. ' + item.trim().toString() %>
+          </div>
+        <% }); %>        
       </div>
         <div class="div2">
       <h1>Name Of Judges:</h1>
-      <% Judgnames.forEach(function(item) { %>
-        <div><%= item.trim().toString() %></div>
+      <% Judgnames.forEach(function(item,index) { %>
+        <div>
+          <%= (index + 1) + '. ' + item.trim().toString() %>
+        </div>
       <% }); %>
         </div>
         <div class="div3">

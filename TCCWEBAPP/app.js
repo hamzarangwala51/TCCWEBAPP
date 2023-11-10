@@ -3,6 +3,7 @@ const multer = require('multer');
 const fs = require('fs');
 const JsonDataHandler = require('./jsonModel');
 const generateResponse = require('./Api/api.js');
+const compareInitials = require('./compareIntials.js');
 const getExcelFunc = require('./excel.js');
 const app = express();
 const port = 3000;
@@ -60,9 +61,9 @@ app.get('/results', async (req, res) => {
             const ResponseFromAi = [];
             const Questions="Please tell me these features: Winning/Losing/Partially Winning, How many years did the case take?, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation)Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named:";
                 let cit=jsonDataHandler.printSpecificItems();
-                let InputArray = [cit[2]+Questions];
-                const response =  await generateResponse(InputArray);
-                 ResponseFromAi.push(response.toString());
+                let InputArray = [cit[0]+Questions];
+                //const response =  await generateResponse(InputArray);
+                 //ResponseFromAi.push(response.toString());
                 // const promises = [ 
                     
                 //     .then(response => {
@@ -79,6 +80,7 @@ app.get('/results', async (req, res) => {
                     const appeleantnames =[];
                     const yearOfCase =[];
                     const Judgnames = [];
+                    const Intials =[];
                     const pattern = /BETWEEN:\s*\n(.+?),/;
                     const patternTEST = /BETWEEN:\s*\n(.*?)\n/;
                     //const patternTEST = /BETWEEN:\s*\n([^,]+)/;
@@ -202,7 +204,9 @@ app.get('/results', async (req, res) => {
                             //     });
 
                                 
-                                                         
+                                const resultForIntials = compareInitials(extractedStrings[42], Judgnames[42].trimStart());
+                                Intials.push(resultForIntials);
+                                 console.log(Intials.toString());                  
                                 const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
                                 console.log(ResponseFromAi);
                                 const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName};
