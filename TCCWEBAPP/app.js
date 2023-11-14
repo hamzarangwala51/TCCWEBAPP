@@ -59,11 +59,47 @@ app.get('/results', async (req, res) => {
         console.log(uploadedFile.originalname);
             const jsonDataHandler = new JsonDataHandler(json);
             const ResponseFromAi = [];
-            const Questions="Please tell me these features: Winning/Losing/Partially Winning, How many years did the case take?, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation)Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named:";
+            const Questions="Please tell me these features in JSON format: Outcome of the Case(Winning/Losing/Partially Winning), How many years did the case take, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation)Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named:";
                 let cit=jsonDataHandler.printSpecificItems();
-                let InputArray = [cit[0]+Questions];
-                //const response =  await generateResponse(InputArray);
-                 //ResponseFromAi.push(response.toString());
+                //let InputArray = [cit[1]+Questions];
+
+                
+                //let InputArray = [cit[7]+"Appelant name (if its a corporation list shareholder name) and Judges name and give me it an array?"]
+               
+                 // const response =  await generateResponse(InputArray,);
+                  // ResponseFromAi.push(response.toString());
+
+
+
+                //    const response =
+                //     '{\n' +
+                //    '  "Outcome of the Case": "Losing",\n' +
+                //    '  "How many years did the case take?": 7,\n' +
+                //    '  "Gender of the Appellant": "Female",\n' +
+                //    '  "Gender of the Judge": "Female",\n' +
+                //    '  "Type of issue": "Income Tax",\n' +
+                //    '  "Type of taxpayer": "Individual"\n' +
+                //    '}';
+                //     ResponseFromAi.push(response.toString());
+
+
+                //     const jsonObject = JSON.parse(ResponseFromAi[0]);
+
+                //    // Access the values using the keys
+                //                    const outcome = jsonObject["Outcome of the Case"];
+                //                    const caseDuration = jsonObject["How many years did the case take"];
+                //                    const appellantGender = jsonObject["Gender of the Appellant"];
+                //                    const judgeGender = jsonObject["Gender of the Judge"];
+                //                    const issueType = jsonObject["Type of issue"];
+                //                    const taxpayerType = jsonObject["Type of taxpayer"];
+
+                //         console.log(outcome);
+                //         console.log("Case Duration:", caseDuration);
+                //         console.log("Appellant Gender:", appellantGender);
+                //         console.log("Judge Gender:", judgeGender);
+                //         console.log("Issue Type:", issueType);
+                //         console.log("Taxpayer Type:", taxpayerType);
+                
                 // const promises = [ 
                     
                 //     .then(response => {
@@ -85,7 +121,7 @@ app.get('/results', async (req, res) => {
                     const patternTEST = /BETWEEN:\s*\n(.*?)\n/;
                     //const patternTEST = /BETWEEN:\s*\n([^,]+)/;
                     //const patternFrench =/ENTRE\s*:\s*\n(.+?),/;
-                    const corporationPattern = /\b(?:Inc\.|INC\.|Corp\.|Ltd\.|LTD\.|LLC)\.?$/i;
+                    const corporationPattern = /(?:\b|[^A-Za-z])(?:Inc\.|INC\.|Corp\.|Ltd\.|LTD\.|LLC)\.?/i;
                     const JudgPattern=/\n(?:By|Before|BEFORE): The Honourable (Judge|Justice|Deputy Judge)? ([^\n]+)\n/i;
                     const patternForJUD = /(\nBY:\s*\n(.*?)\n|\nBEFORE[\s\S]*?\n|\nBefore[\s\S]*?\n|\nBy[\s\S]*?\n)/;
                     const patternifNamenotFound = /\nREASONS FOR JUDGMENT BY:\nThe Honourable(?: (Judge|Justice|Deputy Judge|Associate Chief Judge))? (.*?)\n/i;
@@ -113,7 +149,8 @@ app.get('/results', async (req, res) => {
                                 const isCorporation =corporationPattern.test(match[1]);
                                 if(isCorporation){
                                     extractedStrings.push(match[1]);
-                                }else{
+                                }
+                                else{
                                     extractedStrings.push(match[1]);
                                 }
                             }else{
@@ -123,6 +160,29 @@ app.get('/results', async (req, res) => {
                             //     //console.log(text.name.toString());
                             // }
                        });
+
+                       let consecutiveNotFoundCount = 0;
+                        let lastItemLengthWithAName = 0;
+
+                        // Iterate through the array
+                        for (let i = 0; i < extractedStrings.length; i++) {
+                        if (extractedStrings[i].includes("Not Found")) {
+                            // If "Not Found" is encountered, increment the count
+                            consecutiveNotFoundCount++;
+                        }
+                        else {
+                            // If a name is encountered, reset the count and store the length
+                            consecutiveNotFoundCount = 0;
+                            lastItemLengthWithAName++;
+                        }
+
+                        // Check if more than 10 consecutive "Not Found" items
+                        if (consecutiveNotFoundCount > 10) {
+                            break;  // Exit the loop if the condition is met
+                        }
+                        }
+                        console.log(lastItemLengthWithAName);
+                    
                     //    TestFirstName.forEach((text) => {
                     //     const match = text.match(pattern);
                     //     if (match) {
@@ -156,7 +216,7 @@ app.get('/results', async (req, res) => {
                                         if (match1 && match1[1]) {
                                             Judgnames.push(match1[1]);
                                     }else{
-                                    Judgnames.push(object[1]);
+                                        Judgnames.push("JudgeName Not Found in Pattern also ")
                                 }
                                    // console.log(item.name.toString());
                                 }
@@ -168,7 +228,7 @@ app.get('/results', async (req, res) => {
                                 else{
                                     const mat = item.unofficial_text.match(judgeNamePattern);
                                     if(mat){
-                                        Judgnames.push(mat[2])
+                                        Judgnames.push(mat[2].toString().substring(0,38))
                                     }else{
                                          Judgnames.push("JudgeName Not Found in Pattern also ")
                                     }
@@ -182,7 +242,23 @@ app.get('/results', async (req, res) => {
                           //console.log(corpnames.length);
                           //console.log(cit.length);
                           console.log(Judgnames.length);  
-                                 
+                         
+                            // console.log(extractedStrings[4]);
+                            //     const isCorporation =corporationPattern.test(extractedStrings[4]);
+                            //     let InputArray=[];
+                            //     if(isCorporation){
+                            //         InputArray.push(cit[4]+"list the shareholder name of this Corporation");
+                            //     }
+                                //const response =  await generateResponse(InputArray,);
+                                //ResponseFromAi.push(response.toString());
+                           // console.log(i);
+                          
+
+                            let i = 0;
+                         for(i=0;i<extractedStrings.length;i++){
+                           const resultForIntials = compareInitials(extractedStrings[i].toString(),Judgnames[i].trimStart());
+                          Intials.push(resultForIntials);
+                         }
                                     
                                
                             //  Promise.all(promises)
@@ -202,14 +278,13 @@ app.get('/results', async (req, res) => {
                             //       // Handle any errors that occur during the promises
                             //       console.error('An error occurred:', error);
                             //     });
-
-                                
-                                const resultForIntials = compareInitials(extractedStrings[42], Judgnames[42].trimStart());
-                                Intials.push(resultForIntials);
-                                 console.log(Intials.toString());                  
+                                     
+                                       
+                                                              
+                                     // console.log(Intials.toString());          
                                 const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
                                 console.log(ResponseFromAi);
-                                const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName};
+                                const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName,Intials};
                                 res.render('download',temp);
 
                 // var firstName = [];

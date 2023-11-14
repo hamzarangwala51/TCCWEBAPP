@@ -8,7 +8,7 @@
           display:flex; /* Use flexbox to arrange elements side by side */
       }
 
-      .div1, .div2,.div3 {
+      .div1, .div2,.div3,.div4{
           width: 50%; /* Set the width to 50% to make them equal in size */
           padding: 10px;
           justify-content: center;
@@ -34,7 +34,7 @@
 </head>
 <body>
     <h1>Unofficial_text JSON Data of the First Object:</h1>
-    <pre><%= cit[2].toString() %></pre>
+    <pre><%= cit[0].toString() %></pre>
 
     <h1>Response of the Unofficial_text JSON Data of the First Object:</h1>
     <pre><%= ResponseFromAi.toString() %></pre>
@@ -63,8 +63,16 @@
               <%=item.trim().toString() %></div>
           <% }); %>
             </div>
-
+            <div class="div4">
+              <h1>Comparison of Intials:</h1>
+              <% Intials.forEach(function(item,index) { %>
+                <div class="align">
+                  <%=(index + 1) + '. ' + item.toString() %></div>
+              <% }); %>
+                </div>
     </div>
+    
+</div>
     <div class="download-btn">   
        <button id="downloadButton"class="large-button">
       <a href="/download-excel?excelFileName=<%= excelFileName %>" style="color: black; text-decoration: none;">Download Excel

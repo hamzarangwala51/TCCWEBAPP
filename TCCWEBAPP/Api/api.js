@@ -9,7 +9,7 @@ const openAi = new OpenAIApi({
 
 const systemMessage = { role: 'system', content: 'You are a helpful assistant.' };
 
-async function generateResponse(inputArray) {
+async function generateResponse(inputArray,maxTokens) {
   // Ensure input is in an acceptable format (array of strings)
   if (!Array.isArray(inputArray) || inputArray.length === 0 || typeof inputArray[0] !== 'string') {
     throw new Error('Input must be an array of strings.');
@@ -20,9 +20,9 @@ async function generateResponse(inputArray) {
   const tokenCount = countTokens(inputContent);
   console.log(tokenCount);
   if (tokenCount < 40000) {
-    return await getOpenAIResponse(inputContent, systemMessage);
+    return await getOpenAIResponse(inputContent, systemMessage,maxTokens);
   } else {
-    return await processLargeInput(inputContent);
+    return await processLargeInput(inputContent,maxTokens);
   }
 }
 
@@ -36,12 +36,13 @@ function countTokens(text) {
   return estimated_tokens; // This is not correct for token counting
 }
 
-const getOpenAIResponse = async (content, systemMessage) => {
+const getOpenAIResponse = async (content, systemMessage,maxTokens) => {
   try {
     const GPTOutput = await openAi.chat.completions.create({
-      model: "gpt-3.5-turbo-16k",
+      model: "gpt-3.5-turbo-1106",
       messages: [systemMessage, { role: 'user', content }],
-      temperature: 0.7,
+      temperature: 0,
+      max_tokens:maxTokens
     });
     return GPTOutput.choices[0].message.content;
   } catch (error) {
@@ -50,7 +51,7 @@ const getOpenAIResponse = async (content, systemMessage) => {
   }
 };
 
-const processLargeInput = async (inputText) => {
+const processLargeInput = async (inputText,maxTokens) => {
   // Split the text into chunks that are less than the token limit
   // Placeholder for actual token-based splitting
   const tokensPerRequest = 38000;
@@ -60,7 +61,7 @@ const processLargeInput = async (inputText) => {
   let updatedSystemMessage = { ...systemMessage };
 
   for (const chunk of textChunks) {
-    const response = await getOpenAIResponse(chunk, updatedSystemMessage);
+    const response = await getOpenAIResponse(chunk, updatedSystemMessage,maxTokens);
     responses.push(response);
     updatedSystemMessage.content = response; // Update the system message for the next chunk
   }

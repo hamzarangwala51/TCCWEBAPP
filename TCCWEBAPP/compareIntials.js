@@ -1,11 +1,11 @@
 function compareInitials(taxpayerName,judgeName) {
-    console.log(taxpayerName);
+    //console.log(taxpayerName);
     const taxPayerName = taxpayerName.toString().split(' ');
     const taxpayerInitials = {
       first: taxPayerName[0][0],
       last: taxPayerName[taxPayerName.length-1][0],
     };
-    console.log(judgeName);
+   // console.log(judgeName);
     if(!judgeName.includes("JudgeName Not Found in Pattern also")){
     const JudgeNames = judgeName.toString().split(' ');
     let judgeInitials = null;
@@ -22,10 +22,10 @@ function compareInitials(taxpayerName,judgeName) {
     }
 
   
-    console.log(taxpayerInitials.first);
-    console.log(taxpayerInitials.last);
-    console.log(judgeInitials.first);
-    console.log(judgeInitials.last);
+    // console.log(taxpayerInitials.first);
+    // console.log(taxpayerInitials.last);
+   // console.log(judgeInitials.first);
+     //console.log(judgeInitials.last);
 
     if (
       taxpayerInitials.first === judgeInitials.first &&
