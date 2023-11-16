@@ -79,6 +79,7 @@ app.get('/results', async (req, res) => {
                     const typeOfIssue =[];
                     const GenderofAppellant=[];
                     const GenderofJudge=[];
+                    const outComeOfCase=[];
                     for(j=0;j<3;j++){
 
                         let InputArray = [cit[j] + Questions];
@@ -112,6 +113,7 @@ app.get('/results', async (req, res) => {
                         typeOfIssue.push(issueType);
                         GenderofAppellant.push(appellantGender);
                         GenderofJudge.push(judgeGender);
+                        outComeOfCase.push(outcome);
                         
                     }
     
@@ -314,9 +316,9 @@ app.get('/results', async (req, res) => {
                                        
                                                               
                                      // console.log(Intials.toString());          
-                                const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
+                                const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings,outComeOfCase,typeOfIssue,GenderofAppellant,GenderofJudge);
                                 console.log(ResponseFromAi);
-                                const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName,Intials,typeOfIssue,GenderofAppellant,GenderofJudge};
+                                const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName,Intials,typeOfIssue,GenderofAppellant,GenderofJudge,outComeOfCase};
                                 res.render('download',temp);
 
                 // var firstName = [];
