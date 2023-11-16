@@ -8,11 +8,23 @@
           display:flex; /* Use flexbox to arrange elements side by side */
       }
 
-      .div1, .div2,.div3,.div4{
+      .div1, .div2,.div3,.div4,.div6{
           width: 50%; /* Set the width to 50% to make them equal in size */
           padding: 10px;
           justify-content: center;
           align-items: center;
+      }
+      .div5 {
+          width: 80%; /* Set the width to 50% to make them equal in size */
+          padding: 10px;
+          justify-content: center;
+          align-items: center;
+      }
+      .bottomPadding {
+        margin-bottom: 40px;
+      }
+      .extbottomPadding {
+        margin-bottom: 75px;
       }
       .align{
         align-items: center;
@@ -41,15 +53,20 @@
 
     <div class="container">
       <div class="div1">
-        <h1>Name of Applicants <%= JsonFilename.toString() %> File:</h1>
+      <div class ="bottomPadding">
+        <h1>Name of Applicants:</h1>
+      </div>
         <% extractedStrings.forEach(function(item, index) { %>
           <div>
             <%= (index + 1) + '. ' + item.trim().toString() %>
           </div>
-        <% }); %>        
+        <% }); %> 
+          
       </div>
         <div class="div2">
+          <div class ="bottomPadding">
       <h1>Name Of Judges:</h1>
+        </div>
       <% Judgnames.forEach(function(item,index) { %>
         <div>
           <%= (index + 1) + '. ' + item.trim().toString() %>
@@ -57,19 +74,54 @@
       <% }); %>
         </div>
         <div class="div3">
+          <div class ="extbottomPadding">
           <h1>Year:</h1>
+        </div>
           <% yearOfCase.forEach(function(item) { %>
             <div class="align">
               <%=item.trim().toString() %></div>
           <% }); %>
             </div>
             <div class="div4">
+              <div class ="bottomPadding">
               <h1>Comparison of Intials:</h1>
+              </div>
               <% Intials.forEach(function(item,index) { %>
                 <div class="align">
-                  <%=(index + 1) + '. ' + item.toString() %></div>
-              <% }); %>
+                  <%=(index + 1) + '. ' + item.toString() %>
                 </div>
+                <% }); %>
+            </div>
+            <div class="div5">
+              <div class ="extbottomPadding">
+              <h1>Type of Issue:</h1>
+              </div>
+              <% typeOfIssue.forEach(function(item,index) { %>
+                <div class="align">
+                  <%=(index + 1) + '. ' + item.toString() %>
+                </div>
+                <% }); %>
+            </div>
+            <div class="div6">
+            <div class ="bottomPadding">
+              <h1>Gender of Appellant:</h1>
+            </div>
+              <% GenderofAppellant.forEach(function(item,index) { %>
+                <div class="align">
+                  <%=(index + 1) + '. ' + item.toString() %>
+                </div>
+                <% }); %>
+            </div>
+            <div class="div6">
+              <div class ="bottomPadding">
+                <h1>Gender of Judge:</h1>
+              </div>
+                <% GenderofJudge.forEach(function(item,index) { %>
+                  <div class="align">
+                    <%=(index + 1) + '. ' + item.toString() %>
+                  </div>
+                  <% }); %>
+              </div>
     </div>
     
 </div>

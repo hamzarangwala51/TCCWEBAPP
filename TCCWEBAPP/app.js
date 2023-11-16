@@ -71,31 +71,31 @@ app.get('/results', async (req, res) => {
                    '}';
                 const Questions="Please tell me these features in this ${JSONFormat} format: Outcome of the Case(Winning/Losing/Partially Winning), How many years did the case take, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named,Initials of the Appellant,Initials of the Judge";
                 let cit=jsonDataHandler.printSpecificItems();
-                let InputArray = [cit[1]+Questions];
-
-                
-                //let InputArray = [cit[7]+Questions];
-               
-                  const response =  await generateResponse(InputArray,);
-                   ResponseFromAi.push(response.toString());
 
 
+                    let j=0;
+                    const InitalofAp =[];
+                    const InitialofJud = [];
+                    const typeOfIssue =[];
+                    const GenderofAppellant=[];
+                    const GenderofJudge=[];
+                    for(j=0;j<3;j++){
 
-               
-                //     ResponseFromAi.push(response.toString());
+                        let InputArray = [cit[j] + Questions];
+                        //let InputArray = [cit[7]+Questions];
+                        const response = await generateResponse(InputArray,);
+                        ResponseFromAi.push(response.toString());
+                        const jsonObject = JSON.parse(ResponseFromAi[j]);
 
-
-                    const jsonObject = JSON.parse(ResponseFromAi[0]);
-
-                   // Access the values using the keys
-                                   const outcome = jsonObject["Outcome of the Case"];
-                                   const caseDuration = jsonObject["How many years did the case take"];
-                                   const appellantGender = jsonObject["Gender of the Appellant"];
-                                   const judgeGender = jsonObject["Gender of the Judge"];
-                                   const issueType = jsonObject["Type of issue"];
-                                   const taxpayerType = jsonObject["Type of taxpayer"];
-                                   const InitialOfAppellant = jsonObject["Initials of the Appellant"];
-                                   const InitialOfJudge = jsonObject["Initials of the Judge"];
+                        // Access the values using the keys
+                        const outcome = jsonObject["Outcome of the Case"];
+                        const caseDuration = jsonObject["How many years did the case take"];
+                        const appellantGender = jsonObject["Gender of the Appellant"];
+                        const judgeGender = jsonObject["Gender of the Judge"];
+                        const issueType = jsonObject["Type of issue"];
+                        const taxpayerType = jsonObject["Type of taxpayer"];
+                        const InitialOfAppellant = jsonObject["Initials of the Appellant"];
+                        const InitialOfJudge = jsonObject["Initials of the Judge"];
 
                         console.log("Outcome:",outcome);
                         console.log("Case Duration:", caseDuration);
@@ -106,10 +106,21 @@ app.get('/results', async (req, res) => {
                         console.log("Initial of Appelant:", InitialOfAppellant);
                         console.log("Initial of Judge:", InitialOfJudge)
 
-                        const InitalofAp =[];
-                        const InitialofJud = [];
+                        
                         InitalofAp.push(InitialOfAppellant);
                         InitialofJud.push(InitialOfJudge);
+                        typeOfIssue.push(issueType);
+                        GenderofAppellant.push(appellantGender);
+                        GenderofJudge.push(judgeGender);
+                        
+                    }
+    
+
+                       // console.log(ResponseFromAi[0]);
+                //     ResponseFromAi.push(response.toString());
+
+
+                       
                 
                 // const promises = [ 
                     
@@ -192,7 +203,7 @@ app.get('/results', async (req, res) => {
                             break;  // Exit the loop if the condition is met
                         }
                         }
-                        console.log(lastItemLengthWithAName);
+                        //console.log(lastItemLengthWithAName);
                     
                     //    TestFirstName.forEach((text) => {
                     //     const match = text.match(pattern);
@@ -305,7 +316,7 @@ app.get('/results', async (req, res) => {
                                      // console.log(Intials.toString());          
                                 const excelFileName = getExcelFunc(Judgnames,yearOfCase,extractedStrings);
                                 console.log(ResponseFromAi);
-                                const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName,Intials};
+                                const temp = {extractedStrings,cit,JsonFilename:uploadedFile.originalname,Judgnames,yearOfCase,ResponseFromAi,excelFileName,Intials,typeOfIssue,GenderofAppellant,GenderofJudge};
                                 res.render('download',temp);
 
                 // var firstName = [];
