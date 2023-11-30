@@ -1,46 +1,58 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Download Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-      .container {
-          display:flex; /* Use flexbox to arrange elements side by side */
-      }
-
-      .div1, .div2,.div3,.div4,.div6{
-          width: 50%; /* Set the width to 50% to make them equal in size */
-          padding: 10px;
-          justify-content: center;
-          align-items: center;
-      }
-      .div5 {
-          width: 85%; /* Set the width to 50% to make them equal in size */
-          padding: 10px;
-          justify-content: center;
-          align-items: center;
-      }
-      .bottomPadding {
-        margin-bottom: 40px;
-      }
-      .align{
-        align-items: center;
-        padding-left: 30px;
-      }
-      .download-btn{
-            display: flex;
-            justify-content: center; /* Horizontally center the content */
-            align-items: center; /* Vertically center the content */
-            height: 10vh;  
-      }
-      .large-button {
-            width: 200px; /* Set the desired width for the button */
-            height: 40px; /* Set the desired height for the button */
-            font-size: 18px;
-            margin-left: 10px;  /* Optionally adjust the font size */
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-  </style>
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .div11,
+        .div5,
+        .div4,
+        .div6 {
+          width: 100%;
+        }
+
+        .bottomPadding {
+            margin-bottom: 10px;
+        }
+
+        .align {
+            align-items: center;
+            padding-left: 30px;
+        }
+
+        .download-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh;
+        }
+
+        .large-button {
+            width: 200px;
+            height: 40px;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+    </style>
 </head>
+
 <body>
     <h1>Unofficial_text JSON Data of the First Object:</h1>
     <pre><%= cit[0].toString() %></pre>
@@ -49,108 +61,197 @@
     <pre><%= ResponseFromAi.toString() %></pre>
 
     <div class="container">
-      <div class="div5">
-      <div class ="bottomPadding">
-        <h1>Name of Applicants:</h1>
-      </div>
-        <% extractedStrings.forEach(function(item, index) { %>
-          <div>
-            <%= (index + 1) + '. ' + item.trim().toString() %>
+        <div class="div11">
+            <div class="bottomPadding">
+                <h1>Name of Applicants:</h1>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% extractedStrings.forEach(function(item, index) { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= item.trim().toString() %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <div class="div5">
+            <div class="bottomPadding">
+                <h1>Name Of Judges:</h1>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Judge Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% Judgnames.forEach(function(item, index) { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= item.trim().toString() %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <div class="div5">
+          <div class="bottomPadding">
+              <h1>Year of the Case:</h1>
           </div>
-        <% }); %> 
-          
-      </div>
-        <div class="div2">
-          <div class ="bottomPadding">
-      <h1>Name Of Judges:</h1>
-        </div>
-      <% Judgnames.forEach(function(item,index) { %>
-        <div>
-          <%= (index + 1) + '. ' + item.trim().toString() %>
-        </div>
-      <% }); %>
-        </div>
-        <div class="div3">
-          <div class ="bottomPadding">
-          <h1>Year of the Case:</h1>
-        </div>
-          <% yearOfCase.forEach(function(item) { %>
-            <div class="align">
-              <%=item.trim().toString() %></div>
-          <% }); %>
-            </div>
-            <div class="div4">
-              <div class ="bottomPadding">
-              <h1>Comparison of Intials:</h1>
-              </div>
-              <% Intials.forEach(function(item,index) { %>
-                <div class="align">
-                  <%=(index + 1) + '. ' + item.toString() %>
-                </div>
-                <% }); %>
-            </div>
-            <div class="div4">
-              <div class ="bottomPadding">
-              <h1>OutCome of Case :</h1>
-              </div>
-              <% outComeOfCase.forEach(function(item,index) { %>
-                <div class="align">
-                  <%=(index + 1) + '. ' + item.toString() %>
-                </div>
-                <% }); %>
-            </div>
-            <div class="div5">
-              <div class ="bottomPadding">
-              <h1>Type of Issue of the Case:</h1>
-              </div>
-              <% typeOfIssue.forEach(function(item,index) { %>
-                <div class="align">
-                  <%=(index + 1) + '. ' + item.toString() %>
-                </div>
-                <% }); %>
-            </div>
-            <div class="div6">
-            <div class ="bottomPadding">
-              <h1>Gender of Appellant:</h1>
-            </div>
-              <% GenderofAppellant.forEach(function(item,index) { %>
-                <div class="align">
-                  <%=(index + 1) + '. ' + item.toString() %>
-                </div>
-                <% }); %>
-            </div>
-            <div class="div6">
-              <div class ="bottomPadding">
-                <h1>Gender of Judge:</h1>
-              </div>
-                <% GenderofJudge.forEach(function(item,index) { %>
-                  <div class="align">
-                    <%=(index + 1) + '. ' + item.toString() %>
-                  </div>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Index</th>
+                      <th>Year</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <% yearOfCase.forEach(function(item, index) { %>
+                      <tr>
+                          <td><%= index + 1 %></td>
+                          <td><%= item.trim().toString() %></td>
+                      </tr>
                   <% }); %>
-              </div>
+              </tbody>
+          </table>
+      </div>  
+      <div class="div5">
+        <div class="bottomPadding">
+            <h1>Initial Comparison:</h1>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Comparison</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Intials.forEach(function(item, index) { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= item.toString() %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>  
+    <div class="div5">
+      <div class="bottomPadding">
+          <h1>Outcome of the case:</h1>
+      </div>
+      <table>
+          <thead>
+              <tr>
+                  <th>Index</th>
+                  <th>Outcome</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% outComeOfCase.forEach(function(item, index) { %>
+                  <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= item.trim().toString() %></td>
+                  </tr>
+              <% }); %>
+          </tbody>
+      </table>
+  </div>
+  <div class="div5">
+    <div class="bottomPadding">
+        <h1>Type of Issue of Case:</h1>
     </div>
-    
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Type of Issue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% typeOfIssue.forEach(function(item, index) { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= item.trim().toString() %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
 </div>
-    <div class="download-btn">   
-       <button id="downloadButton"class="large-button">
-      <a href="/download-excel?excelFileName=<%= excelFileName %>" style="color: black; text-decoration: none;">Download Excel
-        <i class="fas fa-download"></i>
-      </a>
-      </button>
+
+<div class="div5">
+  <div class="bottomPadding">
+      <h1>Gender of Appellant:</h1>
+  </div>
+  <table>
+      <thead>
+          <tr>
+              <th>Index</th>
+              <th>Gender</th>
+          </tr>
+      </thead>
+      <tbody>
+          <%  GenderofAppellant.forEach(function(item, index) { %>
+              <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= item.trim().toString() %></td>
+              </tr>
+          <% }); %>
+      </tbody>
+  </table>
+</div>
+<div class="div5">
+  <div class="bottomPadding">
+      <h1>Gender of Judge:</h1>
+  </div>
+  <table>
+      <thead>
+          <tr>
+              <th>Index</th>
+              <th>Gender</th>
+          </tr>
+      </thead>
+      <tbody>
+          <%  GenderofJudge.forEach(function(item, index) { %>
+              <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= item.trim().toString() %></td>
+              </tr>
+          <% }); %>
+      </tbody>
+  </table>
+</div>
+        <!-- Repeat the same structure for other sections -->
     </div>
 
-    <script src="script.js">
-    </script>
+    <div class="download-btn">
+        <button id="downloadButton" class="large-button">
+            <a href="/download-excel?excelFileName=<%= excelFileName %>" style="color: black; text-decoration: none;">Download Excel
+                <i class="fas fa-download"></i>
+            </a>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
+
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-      const downloadLink = document.getElementById("downloadButton");
-  
-      downloadLink.addEventListener("click", function () {
-          // You can replace this alert with a more user-friendly notification
-          alert("Your <%= excelFileName%> file is being downloaded... Please check your downloads folder.");
-      });
-  });
-  </script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const downloadLink = document.getElementById("downloadButton");
+
+        downloadLink.addEventListener("click", function () {
+            alert("Your <%= excelFileName%> file is being downloaded... Please check your downloads folder.");
+        });
+    });
+</script>

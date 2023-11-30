@@ -2,18 +2,22 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const JsonDataHandler = require('./jsonModel');
-const generateResponse = require('./Api/api.js');
+const makeApiRequests = require('./Api/requestApi.js');
 const compareInitials = require('./compareIntials.js');
 const getExcelFunc = require('./excel.js');
 const app = express();
 const port = 3000;
 const ejs = require('ejs');
 const { match } = require('assert');
+
+const summarizeText = require('./summaryFunc');
+const countTokens = require('./Api/gptModel.js');
 let uploadedFile;
 
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 
 // Set up multer for file uploads
 const storage = multer.memoryStorage(); // You can also use 'diskStorage' for saving to disk
@@ -58,68 +62,87 @@ app.get('/results', async (req, res) => {
         const json = JSON.parse(uploadedFile.buffer.toString());
         console.log(uploadedFile.originalname);
             const jsonDataHandler = new JsonDataHandler(json);
-            const ResponseFromAi = [];
-                const JSONFormat =
-                    '{\n' +
-                   '  "Outcome of the Case": "Losing",\n' +
-                   '  "How many years did the case take?": 7,\n' +
-                   '  "Gender of the Appellant": "Female",\n' +
-                   '  "Gender of the Judge": "Female",\n' +
-                   '  "Type of issue": "Income Tax",\n' +
-                   '  "Initials of the Appellant": "C.W.D"\n' +
-                   '  "Initials of the Judge": "D.W.B"\n' +
-                   '}';
-                const Questions="Please tell me these features in this ${JSONFormat} format: Outcome of the Case(Winning/Losing/Partially Winning), How many years did the case take, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named,Initials of the Appellant,Initials of the Judge";
-                let cit=jsonDataHandler.printSpecificItems();
+                let ResponseFromAi=[];
+               let cit=jsonDataHandler.printSpecificItems();
+               let url =jsonDataHandler.printSpecificNames(); 
 
+                //     summarizeText(cit[0])
+                //    .then((summary) => console.log(summary))
+                //    .catch((error) => console.error('Error:', error));
+                const InitalofAp =[];
+                const InitialofJud = [];
+                const typeOfIssue =[];
+                const GenderofAppellant=[];
+                const GenderofJudge=[];
+                const outComeOfCase=[];
 
-                    let j=0;
-                    const InitalofAp =[];
-                    const InitialofJud = [];
-                    const typeOfIssue =[];
-                    const GenderofAppellant=[];
-                    const GenderofJudge=[];
-                    const outComeOfCase=[];
-                    for(j=0;j<3;j++){
-
-                        let InputArray = [cit[j] + Questions];
-                        //let InputArray = [cit[7]+Questions];
-                        const response = await generateResponse(InputArray,);
-                        ResponseFromAi.push(response.toString());
-                        const jsonObject = JSON.parse(ResponseFromAi[j]);
-
-                        // Access the values using the keys
-                        const outcome = jsonObject["Outcome of the Case"];
-                        const caseDuration = jsonObject["How many years did the case take"];
-                        const appellantGender = jsonObject["Gender of the Appellant"];
-                        const judgeGender = jsonObject["Gender of the Judge"];
-                        const issueType = jsonObject["Type of issue"];
-                        const taxpayerType = jsonObject["Type of taxpayer"];
-                        const InitialOfAppellant = jsonObject["Initials of the Appellant"];
-                        const InitialOfJudge = jsonObject["Initials of the Judge"];
-
-                        console.log("Outcome:",outcome);
-                        console.log("Case Duration:", caseDuration);
-                        console.log("Appellant Gender:", appellantGender);
-                        console.log("Judge Gender:", judgeGender);
-                        console.log("Issue Type:", issueType);
-                        console.log("Taxpayer Type:", taxpayerType);
-                        console.log("Initial of Appelant:", InitialOfAppellant);
-                        console.log("Initial of Judge:", InitialOfJudge)
-
+                // const Limitarray =[]; 
+                // function countTokenAmount(text) {
+                //     const tokens_per_word = 1.3;
+                //     let word_count = 0;
+                  
+                //     // Check if text is a string or an array of words
+                //     if (typeof text === 'string') {
+                //       // Split the string into words
+                //       word_count = text.split(/\s+/).length;
+                //     } else if (Array.isArray(text)) {
+                //       // Use the length of the array as the word count
+                //       word_count = text.length;
+                //     }
+                  
+                //     const estimated_tokens = word_count * tokens_per_word;
+                //     return estimated_tokens;
+                //   }
+                //     json.forEach((text,index)=>{                        
+                //             if (text.unofficial_text && text.unofficial_text[index] !== undefined) {
+                //                 let res = countTokenAmount(text.unofficial_text);
+                //                 if (res < 40000) {
+                //                     return Limitarray.push("Less than Limit");
+                //                   } else {
+                //                     return Limitarray.push("More than Limit");
+                //                   }                
+                //                 }else {
+                //                     // Handle the case when unofficial_text or its index is undefined
+                //                     console.error(`unofficial_text[${index}] is undefined for item:`, text.unofficial_text);
+                //                 }
+                //         });
+                    
                         
-                        InitalofAp.push(InitialOfAppellant);
-                        InitialofJud.push(InitialOfJudge);
-                        typeOfIssue.push(issueType);
-                        GenderofAppellant.push(appellantGender);
-                        GenderofJudge.push(judgeGender);
-                        outComeOfCase.push(outcome);
-                        
-                    }
-    
 
-                       // console.log(ResponseFromAi[0]);
-                //     ResponseFromAi.push(response.toString());
+
+                   
+                    
+                    let jsonArray=await makeApiRequests(cit);
+                    for(const jsonObject of jsonArray){
+                // Access the values using the keys
+                    const outcome = jsonObject["Outcome of the Case"];
+                    const caseDuration = jsonObject["How many years did the case take"];
+                    const appellantGender = jsonObject["Gender of the Appellant"];
+                    const judgeGender = jsonObject["Gender of the Judge"];
+                    const issueType = jsonObject["Type of issue"];
+                    const taxpayerType = jsonObject["Type of taxpayer"];
+                    const InitialOfAppellant = jsonObject["Initials of the Appellant"];
+                    const InitialOfJudge = jsonObject["Initials of the Judge"];
+
+                    console.log("Outcome:",outcome);
+                    console.log("Case Duration:", caseDuration);
+                    console.log("Appellant Gender:", appellantGender);
+                    console.log("Judge Gender:", judgeGender);
+                    console.log("Issue Type:", issueType);
+                    console.log("Taxpayer Type:", taxpayerType);
+                    console.log("Initial of Appelant:", InitialOfAppellant);
+                    console.log("Initial of Judge:", InitialOfJudge)
+
+                    
+                    InitalofAp.push(InitialOfAppellant);
+                    InitialofJud.push(InitialOfJudge);
+                    typeOfIssue.push(issueType);
+                    GenderofAppellant.push(appellantGender);
+                    GenderofJudge.push(judgeGender);
+                    outComeOfCase.push(outcome);
+                }
+                    //    console.log(ResponseFromAi[0]);
+                    // ResponseFromAi.push(response.toString());
 
 
                        
