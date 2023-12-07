@@ -25,7 +25,8 @@
         .div5,
         .div4,
         .div6 {
-          width: 100%;
+          width: 250%;
+          margin-left: 45px;
         }
 
         .bottomPadding {
@@ -58,12 +59,12 @@
     <pre><%= cit[0].toString() %></pre>
 
     <h1>Response of the Unofficial_text JSON Data of the First Object:</h1>
-    <pre><%= ResponseFromAi.toString() %></pre>
+    <pre><%= JSON.stringify(ResponseFromAi, null, 2) %></pre>
 
     <div class="container">
         <div class="div11">
             <div class="bottomPadding">
-                <h1>Name of Applicants:</h1>
+                <h1>Name of Applicants of the Case:</h1>
             </div>
             <table>
                 <thead>
@@ -84,13 +85,13 @@
         </div>
         <div class="div5">
             <div class="bottomPadding">
-                <h1>Name Of Judges:</h1>
+                <h1>Name of Judges:</h1>
             </div>
             <table>
                 <thead>
                     <tr>
                         <th>Index</th>
-                        <th>Judge Name</th>
+                        <th>Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,7 +106,7 @@
         </div>
         <div class="div5">
           <div class="bottomPadding">
-              <h1>Year of the Case:</h1>
+              <h1>Year of Case:</h1>
           </div>
           <table>
               <thead>
@@ -147,7 +148,7 @@
     </div>  
     <div class="div5">
       <div class="bottomPadding">
-          <h1>Outcome of the case:</h1>
+          <h1>Outcome of case:</h1>
       </div>
       <table>
           <thead>
@@ -168,13 +169,13 @@
   </div>
   <div class="div5">
     <div class="bottomPadding">
-        <h1>Type of Issue of Case:</h1>
+        <h1>Type of Issue:</h1>
     </div>
     <table>
         <thead>
             <tr>
                 <th>Index</th>
-                <th>Type of Issue</th>
+                <th>Issue</th>
             </tr>
         </thead>
         <tbody>
@@ -187,6 +188,50 @@
         </tbody>
     </table>
 </div>
+
+<div class="div5">
+    <div class="bottomPadding">
+        <h1>Type of TaxPayer:</h1>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%  typeofTaxPayer.forEach(function(item, index) { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= item.trim().toString() %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+  </div>
+
+  <div class="div5">
+    <div class="bottomPadding">
+        <h1>Duration of case:</h1>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%  yeartheCasetook.forEach(function(item, index) { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= item.trim().toString() %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+  </div>
 
 <div class="div5">
   <div class="bottomPadding">
@@ -209,6 +254,7 @@
       </tbody>
   </table>
 </div>
+
 <div class="div5">
   <div class="bottomPadding">
       <h1>Gender of Judge:</h1>
@@ -230,6 +276,9 @@
       </tbody>
   </table>
 </div>
+
+
+
         <!-- Repeat the same structure for other sections -->
     </div>
 
