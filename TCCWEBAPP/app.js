@@ -79,7 +79,10 @@ app.get('/results', async (req, res) => {
                 const typeofTaxPayer=[];
                 const url_case=[];
 
-                url_case.push(url);
+                url.forEach((item)=>{
+                    url_case.push(item);
+                })
+               
     
 
                 // const Limitarray =[]; 
