@@ -7,21 +7,21 @@ OPENAI_SECRET_KEY="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";
 const openAi = new OpenAIApi({
   apiKey: OPENAI_SECRET_KEY,
 });
+const JSONFormat = {
+  "Outcome of the Case": "Losing",
+  "How many years did the case take?": 7,
+  "Gender of the Appellant": "Female",
+  "Gender of the Judge": "Female",
+  "Type of issue": "Income Tax",
+  "Initials of the Appellant": "C.W.D",
+  "Initials of the Judge": "D.W.B", // Added a comma here
+};
+const Questions="Please tell me these features in this  ${JSON.stringify(JSONFormat)} format: Outcome of the Case(Winning/Losing/Partially Winning), How many years did the case take, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named, Initials of the Appellant(If it is a corporation take the initials of the Owner of the corporation or Shareholder),Initials of the Judge";
 
-const JSONFormat =
-'{\n' +
-'  "Outcome of the Case": "Losing",\n' +
-'  "How many years did the case take?": 7,\n' +
-'  "Gender of the Appellant": "Female",\n' +
-'  "Gender of the Judge": "Female",\n' +
-'  "Type of issue": "Income Tax",\n' +
-'  "Initials of the Appellant": "C.W.D"\n' +
-'  "Initials of the Judge": "D.W.B"\n' +
-'}';
-const Questions="Please tell me these features in this ${JSONFormat} format: Outcome of the Case(Winning/Losing/Partially Winning), How many years did the case take, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named, Initials of the Appellant(If it is a corporation take the initials of the Owner of the corporation or Shareholder),Initials of the Judge";
 
-const systemMessage = { role: 'system', content: 'You are a helpful assistant.' };
+const systemMessage = { role: 'system', content: 'You are a helpful assistant.'+(Questions)};
 
+const system = { role: 'system', content: 'You are a helpful assistant.'};
 async function generateResponse(inputArray,maxTokens) {
   // Ensure input is in an acceptable format (array of strings)
   if (!Array.isArray(inputArray) || inputArray.length === 0 || typeof inputArray[0] !== 'string') {
@@ -37,13 +37,19 @@ async function generateResponse(inputArray,maxTokens) {
   } else {
     const inputChunks = splitTextIntoChunks(inputContent, 16385);
     const responses = [];
-    for (const chunk of inputChunks) {
-      //const isLastChunk = i === inputChunks.length - 1;
-      //const role = isLastChunk ? 'user' : 'assistant';
-      //const content = isLastChunk ? Questions :inputChunks[i];
-      const response = await getOpenAIResponse(chunk, systemMessage, maxTokens);
-      console.log(response.toString());
-      responses.push(response);
+    for (const [index, chunk] of inputChunks.entries()) {
+      const isLastChunk = index === inputChunks.length - 1;
+      if(isLastChunk){
+        const response = await getOpenAIResponse(chunk,systemMessage, maxTokens);
+        console.log(response.toString());
+        responses.push(response);
+      }
+      else{
+        const response = await getOpenAIResponse(chunk,system, maxTokens);
+        console.log(response.toString());
+        responses.push(response);
+      }
+     
     }
     return responses.join(' ');
   }
@@ -87,7 +93,7 @@ const getOpenAIResponse = async (content, systemMessage,maxTokens) => {
       model: "gpt-3.5-turbo-1106",
       messages: [systemMessage, { role: 'user',content}],
       temperature:0.00,
-      max_tokens:maxTokens
+      max_tokens:maxTokens,
     });
     return GPTOutput.choices[0].message.content;
   } catch (error) {
@@ -95,6 +101,8 @@ const getOpenAIResponse = async (content, systemMessage,maxTokens) => {
     throw error;
   }
 };
+
+
 
 const processLargeInput = async (inputText,maxTokens) => {
   // Split the text into chunks that are less than the token limit

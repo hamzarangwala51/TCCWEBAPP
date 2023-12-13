@@ -1,18 +1,35 @@
 function compareInitials(taxpayerName,judgeName) {
     //console.log(taxpayerName);
     const taxPayerName = taxpayerName;
-    const taxpayerInitials = {
+    let taxpayerInitials=[];
+    if(taxPayerName.length>=4){
+       taxpayerInitials = {
       first: taxPayerName[0][0],
       last: taxPayerName[taxPayerName.length-2][0],
     };
+  }else{
+    taxpayerInitials = {
+      first: taxPayerName[0][0],
+      last: taxPayerName[taxPayerName.length-1][0],
+    };
+  }
    // console.log(judgeName);
     //if(!judgeName.includes("JudgeName Not Found in Pattern also")){
     const JudgeNames = judgeName;
    // let judgeInitials = null;
     //if(JudgeNames.length<=2){
+      let judgeInitials=[];
+      if(JudgeNames.length>=4){
          judgeInitials = {
-      first: JudgeNames[0][0],
-      last: JudgeNames[JudgeNames.length-2][0],
+          first: JudgeNames[0][0],
+          last: JudgeNames[JudgeNames.length-2][0],
+        }
+     }else{
+      judgeInitials = {
+        first: JudgeNames[0][0],
+        last: JudgeNames[JudgeNames.length-1][0],
+      }
+     }
    // };
    // }else if(JudgeNames.length>=3){
     //     judgeInitials = {
@@ -20,11 +37,10 @@ function compareInitials(taxpayerName,judgeName) {
     //         last: JudgeNames[JudgeNames.length-1][0],
     //       };
     // }
-}
     console.log(taxpayerInitials.first);
     console.log(taxpayerInitials.last);
-   console.log(judgeInitials.first);
-     console.log(judgeInitials.last);
+    console.log(judgeInitials.first);
+    console.log(judgeInitials.last);
 
     if (
       taxpayerInitials.first === judgeInitials.first &&

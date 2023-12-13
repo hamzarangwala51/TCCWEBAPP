@@ -10,19 +10,7 @@ const makeApiRequests = async (cit) => {
 
     
     for(j=0;j<cit.length;j++){
-      const JSONFormat =
-    '{\n' +
-   '  "Outcome of the Case": "Losing",\n' +
-   '  "How many years did the case take?": 7,\n' +
-   '  "Gender of the Appellant": "Female",\n' +
-   '  "Gender of the Judge": "Female",\n' +
-   '  "Type of issue": "Income Tax",\n' +
-   '  "Initials of the Appellant": "C.W.D"\n' +
-   '  "Initials of the Judge": "D.W.B"\n' +
-   '}';
-    const Questions="Please tell me these features in this ${JSONFormat} format: Outcome of the Case(Winning/Losing/Partially Winning), How many years did the case take, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named, Initials of the Appellant(If it is a corporation take the initials of the Owner of the corporation or Shareholder),Initials of the Judge";
-   
-    let InputArray = [Questions+cit[j]];
+    let InputArray = [cit[j]];
     //let InputArray = [cit[7]+Questions];
     const response = await generateResponse(InputArray); 
     ResponseFromAi.push(response.toString());
