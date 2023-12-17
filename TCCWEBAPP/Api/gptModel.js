@@ -31,7 +31,8 @@ async function generateResponse(inputArray,maxTokens) {
   // Tokenize input and check token count
   const inputContent = inputArray[0].toString();
   const tokenCount = countTokens(inputContent);
-  console.log(tokenCount);
+  console.log(inputContent.length);
+  //console.log(tokenCount);
   if (tokenCount < 16385) {
     return await getOpenAIResponse(inputContent, systemMessage,maxTokens);
   } else {
@@ -40,14 +41,14 @@ async function generateResponse(inputArray,maxTokens) {
     for (const [index, chunk] of inputChunks.entries()) {
       const isLastChunk = index === inputChunks.length - 1;
       if(isLastChunk){
-        const response = await getOpenAIResponse(chunk,systemMessage, maxTokens);
+        const response = await getOpenAIResponse(chunk,systemMessage,maxTokens);
         console.log(response.toString());
         responses.push(response);
       }
       else{
-        const response = await getOpenAIResponse(chunk,system, maxTokens);
+        const response = await getOpenAIResponse(chunk,system,10);
         console.log(response.toString());
-        responses.push(response);
+        //responses.push(response);
       }
      
     }
@@ -84,10 +85,12 @@ function splitTextIntoChunks(text, chunkSize) {
   if (currentChunk.trim() !== '') {
     chunks.push(currentChunk.trim());
   }
-
+  //console.log(currentChunk.length);
+  //console.log(chunks.length);
   return chunks;
 }
 const getOpenAIResponse = async (content, systemMessage,maxTokens) => {
+  console.log(content.length);
   try {
     const GPTOutput = await openAi.chat.completions.create({
       model: "gpt-3.5-turbo-1106",

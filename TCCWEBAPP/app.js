@@ -15,6 +15,7 @@ const countTokens = require('./Api/gptModel.js');
 let uploadedFile;
 
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -33,6 +34,7 @@ const upload = multer({
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/upload.html');
 });
+app.use('/images', express.static('images'));
 // app.get('/upload', (req, res) => {
 //     // Load and send the HTML file as a response
 //     res.sendFile(__dirname + '/download.html');
@@ -155,8 +157,8 @@ app.get('/results', async (req, res) => {
                    
                    
                          } 
-                console.log(ResponseFromAi);    
-                ResponseFromAi = [...ResponseFromAi, ...jsonArray];
+                    console.log(ResponseFromAi);    
+                    ResponseFromAi = [...ResponseFromAi, ...jsonArray];
                 // If you want to log or do something with ResponseFromAi
                
                 
@@ -360,9 +362,9 @@ app.get('/results', async (req, res) => {
                                      // console.log(Intials.toString());   
 
 
-                    const excelFileName = getExcelFunc(Judgnames, yearOfCase, extractedStrings, outComeOfCase, typeOfIssue, GenderofAppellant, GenderofJudge,Intials,yeartheCasetook,typeofTaxPayer,url_case);
+                    const excelFileName = getExcelFunc(Judgnames, yearOfCase, extractedStrings, outComeOfCase, typeOfIssue, GenderofAppellant, GenderofJudge,Intials,yeartheCasetook,typeofTaxPayer,url_case,InitalofAp,InitialofJud);
                     console.log(ResponseFromAi);
-                    const temp = { extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer };
+                    const temp = { extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer };
                     res.render('download', temp);
 
                 // var firstName = [];

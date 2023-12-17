@@ -54,21 +54,39 @@
             height: 40px;
             font-size: 18px;
             margin-left: 10px;
+            border-radius: 4px;
+            border-color: white;
+            background-color: purple;
+            color: white;
+            padding: 8px 16px; /* Adjust padding as needed */
+            cursor: pointer;
+        }
+        h2 {
+            display: flex;
+            align-items:center; /* Center items vertically */
+            justify-content: start; /* Center items horizontally */
+            text-align: center; /* Center text within the h1 */
+            font-size: 30px;
+        }
+        h2 img{
+            margin-right: 10px; 
         }
     </style>
 </head>
 
 <body>
-    <h1>Unofficial_text JSON Data of the First Object:</h1>
+    <h1>Judgment of the First Case:</h1>
     <pre><%= cit[0].toString() %></pre>
-
-    <h1>Response of the Unofficial_text JSON Data of the First Object:</h1>
+    <h2>
+    <img src="/images/ChatGPT-Logo-PNG-1.png" alt="Image" width="50" height="auto">
+    Response from the OpenAI API :
+</h2>
     <pre><%= JSON.stringify(ResponseFromAi, null, 2) %></pre>
 
     <div class="container">
         <div class="div9">
             <div class="bottomPadding">
-                <h1>Name of Applicants of the Case:</h1>
+                <h1>Name of Applicants:</h1>
             </div>
             <table>
                 <thead>
@@ -128,7 +146,54 @@
                   <% }); %>
               </tbody>
           </table>
-      </div>  
+      </div>
+      
+      
+      <div class="div5">
+        <div class="bottomPadding">
+            <h1>Initial of Appellant:</h1>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Intial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%  InitalofAp.forEach(function(item, index) { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= item.trim().toString() %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+      </div>
+
+      <div class="div5">
+        <div class="bottomPadding">
+            <h1>Initial of Judge:</h1>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Intial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%  InitialofJud.forEach(function(item, index) { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= item.trim().toString() %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+      </div>
+
+
       <div class="div5">
         <div class="bottomPadding">
             <h1>Initial Comparison:</h1>
@@ -280,15 +345,12 @@
       </tbody>
   </table>
 </div>
-
-
-
         <!-- Repeat the same structure for other sections -->
     </div>
 
     <div class="download-btn">
         <button id="downloadButton" class="large-button">
-            <a href="/download-excel?excelFileName=<%= excelFileName %>" style="color: black; text-decoration: none;">Download Excel
+            <a href="/download-excel?excelFileName=<%= excelFileName %>" style="color: white; text-decoration: none;">Download Excel
                 <i class="fas fa-download"></i>
             </a>
         </button>
