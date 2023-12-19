@@ -1,12 +1,13 @@
 const generateResponse = require('./gptModel');
-
+const fs = require('fs').promises;
 const makeApiRequests = async (cit) => {
     let j=0;
     const ResponseFromAi = [];
-     const longDelayAfterSets = 60000;
+     const longDelayAfterSets = 30000;
     const requestsPerSet = 3;
     let jsonObject=[];
     const jsonArray = [];
+    const allResults = [];
 
     
     for(j=0;j<cit.length;j++){
@@ -21,7 +22,6 @@ const makeApiRequests = async (cit) => {
       jsonArray.push(jsonObject);
     } catch (error) {
       console.error('Error parsing JSON:', error);
-      // Handle the error, e.g., log it or take appropriate action
     }
 
     if ((j + 1) % requestsPerSet === 0 && j < cit.length-1) {
@@ -30,6 +30,9 @@ const makeApiRequests = async (cit) => {
       }
 
     }
+    allResults.push(...jsonArray);
+    const allResultsFileName = 'all_results.json';
+    await fs.writeFile(allResultsFileName, JSON.stringify(allResults, null, 2));
     return jsonArray;
 };
 

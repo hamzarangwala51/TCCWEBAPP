@@ -9,14 +9,14 @@ const openAi = new OpenAIApi({
 });
 const JSONFormat = {
   "Outcome of the Case": "Losing",
-  "How many years did the case take?": 7,
+  "How many years did the case take?": '7',
   "Gender of the Appellant": "Female",
   "Gender of the Judge": "Female",
   "Type of issue": "Income Tax",
   "Initials of the Appellant": "C.W.D",
-  "Initials of the Judge": "D.W.B", // Added a comma here
+  "Initials of the Judge": "D.W.B",
 };
-const Questions="Please tell me these features in this  ${JSON.stringify(JSONFormat)} format: Outcome of the Case(Winning/Losing/Partially Winning), How many years did the case take, Gender of the Appellant, Gender of the Judge, Type of issue (income tax; excise tax; anything else), Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named, Initials of the Appellant(If it is a corporation take the initials of the Owner of the corporation or Shareholder),Initials of the Judge";
+const Questions="Please tell me these features in this ${JSON.stringify(JSONFormat)} format: Outcome of the Case(Winning/Losing/Partially Winning),How many years did the case take,Gender of the Appellant, Gender of the Judge,Type of issue (income tax; excise tax; anything else),Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named,Initials of the Appellant(If it is a corporation take the initials of the Owner of the corporation or Shareholder),Initials of the Judge";
 
 
 const systemMessage = { role: 'system', content: 'You are a helpful assistant.'+(Questions)};
@@ -32,7 +32,7 @@ async function generateResponse(inputArray,maxTokens) {
   const inputContent = inputArray[0].toString();
   const tokenCount = countTokens(inputContent);
   console.log(inputContent.length);
-  //console.log(tokenCount);
+  console.log(tokenCount);
   if (tokenCount < 16385) {
     return await getOpenAIResponse(inputContent, systemMessage,maxTokens);
   } else {

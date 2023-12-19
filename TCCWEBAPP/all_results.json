@@ -1,0 +1,52 @@
+[
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "Less than 1 year",
+    "Gender of the Appellant": "Female",
+    "Gender of the Judge": "Female",
+    "Type of issue": "Income Tax Act",
+    "Type of taxpayer": "Individual",
+    "Initials of the Appellant": "M.R.",
+    "Initials of the Judge": "L.L."
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "2",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual",
+    "Initials of the Appellant": "C.B.L.",
+    "Initials of the Judge": "D.G.H.B."
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "Less than 1 year",
+    "Gender of the Appellant": "Not specified",
+    "Gender of the Judge": "Female",
+    "Type of issue": "Excise tax",
+    "Type of taxpayer": "Corporation",
+    "Initials of the Appellant": "S.K.",
+    "Initials of the Judge": "D.C."
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "Less than 1 year",
+    "Gender of the Appellant": "Not specified",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Employment Insurance Act",
+    "Type of taxpayer": "Corporation",
+    "Initials of the Appellant": "P.W.S.",
+    "Initials of the Judge": "T.E.M."
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "7 years",
+    "Gender of the Appellant": "Female",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax Act",
+    "Type of taxpayer": "Corporation",
+    "Initials of the Appellant": "DB",
+    "Initials of the Judge": "FA"
+  }
+]
