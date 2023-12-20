@@ -23,15 +23,13 @@ const makeApiRequests = async (cit) => {
       "Initials of the Appellant": "C.W.A",
       "Initials of the Judge": "D.W.B",
     };
-    // const response = await generateResponse(InputArray); 
-    // ResponseFromAi.push(response.toString());
+    const response = await generateResponse(InputArray); 
+    ResponseFromAi.push(response.toString());
     try {
-      // const jsonString = ResponseFromAi[j].match(/\{.*\}/s)[0];
-      // console.log('Attempting to parse JSON:', jsonString);
-       //const jsonObject = JSON.parse(jsonString);
-       // jsonArray.push(jsonObject);
-       //jsonArray.push(ResponseFromAi[j]);
-       jsonArray.push(JSONFormatIfError);
+      const jsonString = ResponseFromAi[j].match(/\{.*\}/s)[0];
+      console.log('Attempting to parse JSON:', jsonString);
+       const jsonObject = JSON.parse(jsonString);
+       jsonArray.push(jsonObject);
     } catch (error) {
       jsonArray.push(JSONFormatIfError);
       console.error('Error parsing JSON:', error);
@@ -45,7 +43,7 @@ const makeApiRequests = async (cit) => {
 
     }
     allResults.push(...jsonArray);
-    const allResultsFileName = 'all_results.json';
+    const allResultsFileName = 'all_results2020.json';
     await fs.writeFile(allResultsFileName, JSON.stringify(allResults, null, 2));
     return jsonArray;
 };

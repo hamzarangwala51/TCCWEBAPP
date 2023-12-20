@@ -22,9 +22,13 @@ const Questions="please tell me these features in this ${JSON.stringify(JSONForm
 const systemMessage = { role: 'system', content: 'Based on the information provided can you'+(Questions)};
 
 function getResponsefromPrevious(response){
-const systemStartChunk = { role: 'system', content: 'Based on the information provided can you keep updating '+(response.toString())+' in this json format'};
+const systemStartChunk = { role: 'system', content: 'Based on the information provided can you keep updating '+(response.toString())+'} only this json format'};
 return systemStartChunk;
 }
+function getResponseforLast(response){
+  const systemStartChunk = { role: 'system', content: 'Based on the information provided can you tell me '+(response.toString())+'} only this json format'};
+  return systemStartChunk;
+  }
 const systemChunk = { role: 'system', content:'Continuation of the data for better understanding...'};
 const system = { role: 'system', content: 'You are a helpful assistant.'};
 
@@ -54,7 +58,7 @@ async function generateResponse(inputArray,maxTokens) {
          chunkresp.push(response);
           //responses.push(response);
       }else if(isLastChunk){
-        sys=getResponsefromPrevious(chunkresp[chunkresp.length-1]);
+        sys=getResponseforLast(chunkresp[chunkresp.length-1]);
         console.log(sys);
        const response = await getOpenAIResponse(chunk,sys,150);
         console.log(response.toString());

@@ -1,0 +1,290 @@
+[
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "3",
+    "Initials of the Appellant": "IB",
+    "Initials of the Judge": "BR",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax Act",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "5",
+    "Initials of the Appellant": "WEVCCS",
+    "Initials of the Judge": "DEG",
+    "Gender of the Appellant": "Not provided",
+    "Gender of the Judge": "Male",
+    "Type of issue": "GST",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "4",
+    "Initials of the Appellant": "MF",
+    "Initials of the Judge": "GS",
+    "Gender of the Appellant": "Mixed",
+    "Gender of the Judge": "Female",
+    "Type of issue": "Income Tax Act",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "3 years",
+    "Initials of the Appellant": "KLH",
+    "Initials of the Judge": "SO",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Employment Insurance Act",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "10 years",
+    "Initials of the Appellant": "AW",
+    "Initials of the Judge": "JH",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Female",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Winning",
+    "How many years did the case take": "3",
+    "Initials of the Appellant": "PCU",
+    "Initials of the Judge": "SW",
+    "Gender of the Appellant": "N/A",
+    "Gender of the Judge": "Female",
+    "Type of issue": "Excise tax",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "2",
+    "Initials of the Appellant": "VEC",
+    "Initials of the Judge": "DEG",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "2",
+    "Initials of the Appellant": "GI",
+    "Initials of the Judge": "RM",
+    "Gender of the Appellant": "Mixed",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Excise tax",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "11",
+    "Initials of the Appellant": "DJ",
+    "Initials of the Judge": "JH",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Female",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "4",
+    "Initials of the Appellant": "BO",
+    "Initials of the Judge": "DEG",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax Act",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Not known",
+    "How many years did the case take?": "Not known",
+    "Gender of the Appellant": "MALE",
+    "Gender of the Judge": "MALE",
+    "Type of issue": "Not known",
+    "Initials of the Appellant": "C.W.A",
+    "Initials of the Judge": "D.W.B"
+  },
+  {
+    "Outcome of the Case": "Winning",
+    "How many years did the case take": "2",
+    "Initials of the Appellant": "UNB",
+    "Initials of the Judge": "RSB",
+    "Gender of the Appellant": "Not Applicable",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Canada Pension Plan",
+    "Type of taxpayer": "University"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "6 years",
+    "Initials of the Appellant": "S.R.C.",
+    "Initials of the Judge": "D.R.S.",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "4 years",
+    "Initials of the Appellant": "Y.L.",
+    "Initials of the Judge": "B.R.",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "10",
+    "Initials of the Appellant": "JD",
+    "Initials of the Judge": "SO",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "4",
+    "Initials of the Appellant": "JR",
+    "Initials of the Judge": "SW",
+    "Gender of the Appellant": "Female",
+    "Gender of the Judge": "Female",
+    "Type of issue": "GST",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "1",
+    "Initials of the Appellant": "OG",
+    "Initials of the Judge": "GJ",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Not known",
+    "How many years did the case take?": "Not known",
+    "Gender of the Appellant": "MALE",
+    "Gender of the Judge": "MALE",
+    "Type of issue": "Not known",
+    "Initials of the Appellant": "C.W.A",
+    "Initials of the Judge": "D.W.B"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "1",
+    "Initials of the Appellant": "MB",
+    "Initials of the Judge": "DES",
+    "Gender of the Appellant": "Female",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Employment Insurance Act; Canada Pension Plan",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "1 year",
+    "Initials of the Appellant": "J.P.A.",
+    "Initials of the Judge": "D.E.S.",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "3",
+    "Initials of the Appellant": "G.A.G.",
+    "Initials of the Judge": "B.R.",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "7",
+    "Initials of the Appellant": "AP",
+    "Initials of the Judge": "RSB",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "5 years",
+    "Initials of the Appellant": "SP",
+    "Initials of the Judge": "GS",
+    "Gender of the Appellant": "Female",
+    "Gender of the Judge": "Female",
+    "Type of issue": "Employment Insurance Act",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "Between 2013 and 2019",
+    "Initials of the Appellant": "JD",
+    "Initials of the Judge": "SO",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax Act",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "4",
+    "Initials of the Appellant": "ABC",
+    "Initials of the Judge": "RJH",
+    "Gender of the Appellant": "N/A",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Excise tax",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Winning",
+    "How many years did the case take": "2",
+    "Initials of the Appellant": "AB",
+    "Initials of the Judge": "DES",
+    "Gender of the Appellant": "N/A",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Canada Pension Plan, Employment Insurance Act",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Partially Winning",
+    "How many years did the case take": "11",
+    "Initials of the Appellant": "MAI",
+    "Initials of the Judge": "S.D.",
+    "Gender of the Appellant": "N/A",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Excise tax",
+    "Type of taxpayer": "Corporation"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "5 years",
+    "Initials of the Appellant": "C.O.",
+    "Initials of the Judge": "R.S.B.",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "Income Tax",
+    "Type of taxpayer": "Individual"
+  },
+  {
+    "Outcome of the Case": "Losing",
+    "How many years did the case take": "1",
+    "Initials of the Appellant": "LLK",
+    "Initials of the Judge": "BR",
+    "Gender of the Appellant": "Male",
+    "Gender of the Judge": "Male",
+    "Type of issue": "income tax",
+    "Type of taxpayer": "individual"
+  }
+]
