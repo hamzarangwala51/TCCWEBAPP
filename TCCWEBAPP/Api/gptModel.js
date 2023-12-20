@@ -16,12 +16,18 @@ const JSONFormat = {
   "Initials of the Appellant": "C.W.D",
   "Initials of the Judge": "D.W.B",
 };
-const Questions="Please tell me these features in this ${JSON.stringify(JSONFormat)} format: Outcome of the Case(Winning/Losing/Partially Winning),How many years did the case take,Gender of the Appellant, Gender of the Judge,Type of issue (income tax; excise tax; anything else),Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named,Initials of the Appellant(If it is a corporation take the initials of the Owner of the corporation or Shareholder),Initials of the Judge";
+const Questions="please tell me these features in this ${JSON.stringify(JSONFormat)} format: Outcome of the Case(Winning/Losing/Partially Winning),How many years did the case take,Initials of the Appellant(If it is a corporation take the initials of the Owner of the corporation or Shareholder),Initials of the Judge,Gender of the Appellant, Gender of the Judge,Type of issue (income tax; excise tax; anything else),Type of taxpayer (individual; corporation) Only include corporations (Inc./Ltd.) if the shareholders are individuals and are named.";
 
 
-const systemMessage = { role: 'system', content: 'You are a helpful assistant.'+(Questions)};
+const systemMessage = { role: 'system', content: 'Based on the information provided can you'+(Questions)};
 
+function getResponsefromPrevious(response){
+const systemStartChunk = { role: 'system', content: 'Based on the information provided can you keep updating '+(response.toString())+' in this json format'};
+return systemStartChunk;
+}
+const systemChunk = { role: 'system', content:'Continuation of the data for better understanding...'};
 const system = { role: 'system', content: 'You are a helpful assistant.'};
+
 async function generateResponse(inputArray,maxTokens) {
   // Ensure input is in an acceptable format (array of strings)
   if (!Array.isArray(inputArray) || inputArray.length === 0 || typeof inputArray[0] !== 'string') {
@@ -38,20 +44,34 @@ async function generateResponse(inputArray,maxTokens) {
   } else {
     const inputChunks = splitTextIntoChunks(inputContent, 16385);
     const responses = [];
+    const chunkresp=[];
     for (const [index, chunk] of inputChunks.entries()) {
       const isLastChunk = index === inputChunks.length - 1;
-      if(isLastChunk){
-        const response = await getOpenAIResponse(chunk,systemMessage,maxTokens);
+      const isFirstChunk = index === 0;
+      if(isFirstChunk){
+         const response = await getOpenAIResponse(chunk,systemMessage,100);
+         console.log(response.toString());
+         chunkresp.push(response);
+          //responses.push(response);
+      }else if(isLastChunk){
+        sys=getResponsefromPrevious(chunkresp[chunkresp.length-1]);
+        console.log(sys);
+       const response = await getOpenAIResponse(chunk,sys,150);
         console.log(response.toString());
         responses.push(response);
-      }
-      else{
-        const response = await getOpenAIResponse(chunk,system,10);
+      }else{
+        sys=getResponsefromPrevious(chunkresp[chunkresp.length-1]);
+        console.log(sys);
+        const response = await getOpenAIResponse(chunk,sys,100);
         console.log(response.toString());
+        chunkresp.push(response);
         //responses.push(response);
+        //globalContext += response.toString();
       }
-     
+
     }
+    //globalContext='';
+
     return responses.join(' ');
   }
 }
@@ -62,7 +82,7 @@ function countTokens(text) {
   // This is a placeholder and should be replaced with actual token counting logic
      const tokens_per_word = 1.3;
      const word_count = text.split(/\s+/).length;
-     const estimated_tokens = word_count * tokens_per_word;
+     const estimated_tokens = word_count * tokens_per_word+1700;
   return estimated_tokens; // This is not correct for token counting
 }
 
@@ -89,21 +109,35 @@ function splitTextIntoChunks(text, chunkSize) {
   //console.log(chunks.length);
   return chunks;
 }
-const getOpenAIResponse = async (content, systemMessage,maxTokens) => {
+const getOpenAIResponse = async (content, systemMessage, maxTokens) => {
+  if (!getOpenAIResponse.counter) {
+    getOpenAIResponse.counter = 0;
+  }
+
   console.log(content.length);
+
   try {
     const GPTOutput = await openAi.chat.completions.create({
       model: "gpt-3.5-turbo-1106",
-      messages: [systemMessage, { role: 'user',content}],
-      temperature:0.00,
-      max_tokens:maxTokens,
+      messages: [systemMessage, { role: 'user', content }],
+      temperature: 0.00,
+      max_tokens: maxTokens,
+      response_format: { type: "json_object" }
     });
+    getOpenAIResponse.counter++;
+
+    if (getOpenAIResponse.counter % 3 === 0) {
+      console.log('Waiting for 60 seconds...');
+      await delay(60000); // Delay for 60 seconds (in milliseconds)
+    }
     return GPTOutput.choices[0].message.content;
   } catch (error) {
     console.error("Error in getOpenAIResponse:", error);
     throw error;
   }
 };
+
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 

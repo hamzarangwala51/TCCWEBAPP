@@ -1,35 +1,36 @@
 function compareInitials(taxpayerName,judgeName) {
-    //console.log(taxpayerName);
-    const taxPayerName = taxpayerName;
+    console.log(taxpayerName);
+    if(taxpayerName && judgeName != "Not specified"){
+    const taxPayerName = taxpayerName.replace(/\.*$/, '');
     let taxpayerInitials=[];
-    if(taxPayerName.length>=4){
-       taxpayerInitials = {
-      first: taxPayerName[0][0],
-      last: taxPayerName[taxPayerName.length-2][0],
-    };
-  }else{
+  //   if(taxPayerName.length>=4){
+  //      taxpayerInitials = {
+  //     first: taxPayerName[0][0],
+  //     last: taxPayerName[taxPayerName.length-2][0],
+  //   };
+  // }else{
     taxpayerInitials = {
-      first: taxPayerName[0][0],
-      last: taxPayerName[taxPayerName.length-1][0],
+      first: taxPayerName[0],
+      last: taxPayerName[taxPayerName.length-1],
     };
-  }
-   // console.log(judgeName);
+ // }
+    console.log(judgeName);
     //if(!judgeName.includes("JudgeName Not Found in Pattern also")){
-    const JudgeNames = judgeName;
+    const JudgeNames = judgeName.replace(/\.*$/, '');;
    // let judgeInitials = null;
     //if(JudgeNames.length<=2){
       let judgeInitials=[];
-      if(JudgeNames.length>=4){
-         judgeInitials = {
-          first: JudgeNames[0][0],
-          last: JudgeNames[JudgeNames.length-2][0],
+      // if(JudgeNames.length>=4){
+      //    judgeInitials = {
+      //     first: JudgeNames[0][0],
+      //     last: JudgeNames[JudgeNames.length-2][0],
+      //   }
+     //}else{
+        judgeInitials = {
+        first: JudgeNames[0],
+        last: JudgeNames[JudgeNames.length-1],
         }
-     }else{
-      judgeInitials = {
-        first: JudgeNames[0][0],
-        last: JudgeNames[JudgeNames.length-1][0],
-      }
-     }
+    // }
    // };
    // }else if(JudgeNames.length>=3){
     //     judgeInitials = {
@@ -61,6 +62,9 @@ function compareInitials(taxpayerName,judgeName) {
   // }else{
   //   return "No Comparison Made";
   // }
+}else{
+  return 0;
+}
 }
   
   // Example usage:

@@ -3,8 +3,8 @@ const fs = require('fs').promises;
 const makeApiRequests = async (cit) => {
     let j=0;
     const ResponseFromAi = [];
-     const longDelayAfterSets = 30000;
-    const requestsPerSet = 3;
+     //const longDelayAfterSets = 60000;
+    //const requestsPerSet = 3;
     let jsonObject=[];
     const jsonArray = [];
     const allResults = [];
@@ -12,22 +12,36 @@ const makeApiRequests = async (cit) => {
     
     for(j=0;j<cit.length;j++){
     let InputArray = [cit[j]];
+    //console.log(InputArray);
     //let InputArray = [cit[7]+Questions];
-    const response = await generateResponse(InputArray); 
-    ResponseFromAi.push(response.toString());
+    const JSONFormatIfError = {
+      "Outcome of the Case": "Not known",
+      "How many years did the case take?": 'Not known',
+      "Gender of the Appellant": "MALE",
+      "Gender of the Judge": "MALE",
+      "Type of issue": "Not known",
+      "Initials of the Appellant": "C.W.A",
+      "Initials of the Judge": "D.W.B",
+    };
+    // const response = await generateResponse(InputArray); 
+    // ResponseFromAi.push(response.toString());
     try {
-      const jsonString = ResponseFromAi[j].match(/\{.*\}/s)[0];
-      console.log('Attempting to parse JSON:', jsonString);
-      const jsonObject = JSON.parse(jsonString);
-      jsonArray.push(jsonObject);
+      // const jsonString = ResponseFromAi[j].match(/\{.*\}/s)[0];
+      // console.log('Attempting to parse JSON:', jsonString);
+       //const jsonObject = JSON.parse(jsonString);
+       // jsonArray.push(jsonObject);
+       //jsonArray.push(ResponseFromAi[j]);
+       jsonArray.push(JSONFormatIfError);
     } catch (error) {
+      jsonArray.push(JSONFormatIfError);
       console.error('Error parsing JSON:', error);
+
     }
 
-    if ((j + 1) % requestsPerSet === 0 && j < cit.length-1) {
-        console.log(`Waiting for ${longDelayAfterSets / 1000} seconds before the next set of requests`);
-        await new Promise(resolve => setTimeout(resolve, longDelayAfterSets));
-      }
+    // if ((j + 1) % requestsPerSet === 0 && j < cit.length-1) {
+    //     console.log(`Waiting for ${longDelayAfterSets / 1000} seconds before the next set of requests`);
+    //     await new Promise(resolve => setTimeout(resolve, longDelayAfterSets));
+    //   }
 
     }
     allResults.push(...jsonArray);

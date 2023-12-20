@@ -70,10 +70,10 @@ app.get('/results', async (req, res) => {
                let cit=[];
                let json =[];
 
-               for(let i=0;i<668;i++){
+               for(let i=20;i<40;i++){
                    cit.push(un_officialData[i]);
                    json.push(all_data[i]);
-               }
+                }
                 //     summarizeText(cit[0])
                 //    .then((summary) => console.log(summary))
                 //    .catch((error) => console.error('Error:', error));
@@ -127,41 +127,41 @@ app.get('/results', async (req, res) => {
 
 
                    
-                //     let jsonArray = await makeApiRequests(cit);
-                //     for(const jsonObject of jsonArray){
-                // // Access the values using the keys
-                //     const outcome = jsonObject["Outcome of the Case"];
-                //     const caseDuration = jsonObject["How many years did the case take"];
-                //     const appellantGender = jsonObject["Gender of the Appellant"];
-                //     const judgeGender = jsonObject["Gender of the Judge"];
-                //     const issueType = jsonObject["Type of issue"];
-                //     const taxpayerType = jsonObject["Type of taxpayer"];
-                //     const InitialOfAppellant = jsonObject["Initials of the Appellant"];
-                //     const InitialOfJudge = jsonObject["Initials of the Judge"];
+                    let jsonArray = await makeApiRequests(cit);
+                    for(const jsonObject of jsonArray){
+                // Access the values using the keys
+                        const outcome = jsonObject["Outcome of the Case"];
+                        const caseDuration = jsonObject["How many years did the case take"];
+                        const appellantGender = jsonObject["Gender of the Appellant"];
+                        const judgeGender = jsonObject["Gender of the Judge"];
+                        const issueType = jsonObject["Type of issue"];
+                        const taxpayerType = jsonObject["Type of taxpayer"];
+                        const InitialOfAppellant = jsonObject["Initials of the Appellant"];
+                        const InitialOfJudge = jsonObject["Initials of the Judge"];
 
-                //     console.log("Outcome:",outcome);
-                //     console.log("Case Duration:", caseDuration);
-                //     console.log("Appellant Gender:", appellantGender);
-                //     console.log("Judge Gender:", judgeGender);
-                //     console.log("Issue Type:", issueType);
-                //     console.log("Taxpayer Type:", taxpayerType);
-                //     console.log("Initial of Appelant:", InitialOfAppellant);
-                //     console.log("Initial of Judge:", InitialOfJudge)
+                        console.log("Outcome:",outcome);
+                        console.log("Case Duration:", caseDuration);
+                        console.log("Appellant Gender:", appellantGender);
+                        console.log("Judge Gender:", judgeGender);
+                        console.log("Issue Type:", issueType);
+                        console.log("Taxpayer Type:", taxpayerType);
+                        console.log("Initial of Appelant:", InitialOfAppellant);
+                        console.log("Initial of Judge:", InitialOfJudge)
 
 
-                //     outComeOfCase.push(outcome);
-                //     yeartheCasetook.push(caseDuration);
-                //     GenderofAppellant.push(appellantGender);
-                //     GenderofJudge.push(judgeGender);
-                //     typeOfIssue.push(issueType);
-                //     typeofTaxPayer.push(taxpayerType);
-                //     InitalofAp.push(InitialOfAppellant);
-                //     InitialofJud.push(InitialOfJudge);
+                        outComeOfCase.push(outcome);
+                        yeartheCasetook.push(caseDuration);
+                        GenderofAppellant.push(appellantGender);
+                        GenderofJudge.push(judgeGender);
+                        typeOfIssue.push(issueType);
+                        typeofTaxPayer.push(taxpayerType);
+                        InitalofAp.push(InitialOfAppellant);
+                        InitialofJud.push(InitialOfJudge);
                    
                    
-                //          } 
-                //     console.log(ResponseFromAi);    
-                //     ResponseFromAi = [...ResponseFromAi, ...jsonArray];
+                         } 
+                    console.log(ResponseFromAi);    
+                    ResponseFromAi = [...ResponseFromAi, ...jsonArray];
                 // If you want to log or do something with ResponseFromAi
                
                 
@@ -329,9 +329,10 @@ app.get('/results', async (req, res) => {
                          for(i=0;i < InitalofAp.length && i < InitialofJud.length;i++){
                              if (InitalofAp[i] !== undefined && InitialofJud[i] !== undefined) {
                                 try {
-                                    const resultForIntials = compareInitials(InitalofAp[i], InitialofJud[i]);
+                                    const resultForIntials = compareInitials(InitalofAp[i].trim(), InitialofJud[i].trim());
                                     Intials.push(resultForIntials);
                                 } catch (error) {
+                                    Intials.push(0);
                                     console.error(`Error processing index ${i}: ${error.message}`);
                                     // Handle the error if needed
                                 }
@@ -371,7 +372,7 @@ app.get('/results', async (req, res) => {
                         extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer
                     };
                     const temp = { extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer };
-                    res.redirect(`/download?temp=${temp}`);
+                    res.render('download',temp);
 
                 // var firstName = [];
 
@@ -438,12 +439,6 @@ app.get('/download-excel', (req, res) => {
     const fileStream = fs.createReadStream(excelFileName);
     fileStream.pipe(res);
   });
-
-app.get('/download', (req, res) => {
-    const data = req.query.temp;
-    const temp = storedData || data;
-    res.render('download',temp);
-});
   
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
