@@ -1,7 +1,8 @@
 const { json } = require("express");
 const OpenAIApi = require("openai");
 require("dotenv").config();
-
+const fs = require('fs').promises;
+//const allResults = [];
 // Use environment variable for the API key
 OPENAI_SECRET_KEY="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";
 const openAi = new OpenAIApi({
@@ -25,10 +26,6 @@ function getResponsefromPrevious(response){
 const systemStartChunk = { role: 'system', content: 'Based on the information provided can you keep updating '+(response.toString())+'} only this json format'};
 return systemStartChunk;
 }
-function getResponseforLast(response){
-  const systemStartChunk = { role: 'system', content: 'Based on the information provided can you tell me '+(response.toString())+'} only this json format'};
-  return systemStartChunk;
-  }
 const systemChunk = { role: 'system', content:'Continuation of the data for better understanding...'};
 const system = { role: 'system', content: 'You are a helpful assistant.'};
 
@@ -41,8 +38,8 @@ async function generateResponse(inputArray,maxTokens) {
   // Tokenize input and check token count
   const inputContent = inputArray[0].toString();
   const tokenCount = countTokens(inputContent);
-  console.log(inputContent.length);
-  console.log(tokenCount);
+  console.log("Input Content Length:", inputContent.length);
+  console.log("Token Count:", tokenCount);
   if (tokenCount < 16385) {
     return await getOpenAIResponse(inputContent, systemMessage,maxTokens);
   } else {
@@ -58,7 +55,7 @@ async function generateResponse(inputArray,maxTokens) {
          chunkresp.push(response);
           //responses.push(response);
       }else if(isLastChunk){
-        sys=getResponseforLast(chunkresp[chunkresp.length-1]);
+        sys=getResponsefromPrevious(chunkresp[chunkresp.length-1]);
         console.log(sys);
        const response = await getOpenAIResponse(chunk,sys,150);
         console.log(response.toString());
@@ -75,7 +72,6 @@ async function generateResponse(inputArray,maxTokens) {
 
     }
     //globalContext='';
-
     return responses.join(' ');
   }
 }
@@ -86,7 +82,7 @@ function countTokens(text) {
   // This is a placeholder and should be replaced with actual token counting logic
      const tokens_per_word = 1.3;
      const word_count = text.split(/\s+/).length;
-     const estimated_tokens = word_count * tokens_per_word+1700;
+     const estimated_tokens = word_count * tokens_per_word+5000;
   return estimated_tokens; // This is not correct for token counting
 }
 
@@ -131,8 +127,8 @@ const getOpenAIResponse = async (content, systemMessage, maxTokens) => {
     getOpenAIResponse.counter++;
 
     if (getOpenAIResponse.counter % 3 === 0) {
-      console.log('Waiting for 60 seconds...');
-      await delay(60000); // Delay for 60 seconds (in milliseconds)
+      console.log('Waiting for 25 seconds...');
+      await delay(25000); // Delay for 60 seconds (in milliseconds)
     }
     return GPTOutput.choices[0].message.content;
   } catch (error) {

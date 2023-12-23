@@ -71,12 +71,15 @@ app.get('/results', async (req, res) => {
                let json =[];
                let url =[];
 
-                    for(let i=0;i<68;i++){
+                    for(let i=163;i<326;i++){
                         cit.push(un_officialData[i]);
                         json.push(all_data[i]);
                         url.push(urlForCase[i]);
                         }
-        
+                        // cit.push(un_officialData[218]);
+                        // json.push(all_data[218]);
+                        // url.push(urlForCase[218]);
+                
                 //     summarizeText(cit[0])
                 //    .then((summary) => console.log(summary))
                 //    .catch((error) => console.error('Error:', error));
@@ -128,9 +131,10 @@ app.get('/results', async (req, res) => {
                     
                         
 
-
-                   
-                    //let jsonArray = await makeApiRequests(cit);
+                //let jsonArray =
+                    
+                //     let jsonArray = await makeApiRequests(cit);
+                    
                 //     for(const jsonObject of jsonArray){
                 // // Access the values using the keys
                 //         const outcome = jsonObject["Outcome of the Case"];
@@ -151,7 +155,7 @@ app.get('/results', async (req, res) => {
                 //         console.log("Initial of Appelant:", InitialOfAppellant);
                 //         console.log("Initial of Judge:", InitialOfJudge)
 
-
+            
                 //         outComeOfCase.push(outcome);
                 //         yeartheCasetook.push(caseDuration);
                 //         GenderofAppellant.push(appellantGender);

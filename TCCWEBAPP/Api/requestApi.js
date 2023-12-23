@@ -1,19 +1,15 @@
+const { response } = require('express');
 const generateResponse = require('./gptModel');
 const fs = require('fs').promises;
-const makeApiRequests = async (cit) => {
-    let j=0;
-    const ResponseFromAi = [];
-     //const longDelayAfterSets = 60000;
-    //const requestsPerSet = 3;
-    let jsonObject=[];
-    const jsonArray = [];
-    const allResults = [];
 
-    
-    for(j=0;j<cit.length;j++){
+const makeApiRequests = async (cit) => {
+  const ResponseFromAi = [];
+  const jsonArray = [];
+  const allResults = [];
+
+  for (let j = 0; j < cit.length; j++) {
     let InputArray = [cit[j]];
-    //console.log(InputArray);
-    //let InputArray = [cit[7]+Questions];
+
     const JSONFormatIfError = {
       "Outcome of the Case": "Not known",
       "How many years did the case take?": 'Not known',
@@ -23,29 +19,30 @@ const makeApiRequests = async (cit) => {
       "Initials of the Appellant": "C.W.A",
       "Initials of the Judge": "D.W.B",
     };
-    const response = await generateResponse(InputArray); 
-    ResponseFromAi.push(response.toString());
     try {
+      const response = await generateResponse(InputArray);
+      ResponseFromAi.push(response.toString());
       const jsonString = ResponseFromAi[j].match(/\{.*\}/s)[0];
       console.log('Attempting to parse JSON:', jsonString);
-       const jsonObject = JSON.parse(jsonString);
-       jsonArray.push(jsonObject);
+      const jsonObject = JSON.parse(jsonString);
+      jsonArray.push(jsonObject);
     } catch (error) {
       jsonArray.push(JSONFormatIfError);
-      console.error('Error parsing JSON:', error);
-
+      console.error('Error during response generation:', error);
     }
+  }
 
-    // if ((j + 1) % requestsPerSet === 0 && j < cit.length-1) {
-    //     console.log(`Waiting for ${longDelayAfterSets / 1000} seconds before the next set of requests`);
-    //     await new Promise(resolve => setTimeout(resolve, longDelayAfterSets));
-    //   }
+  const allResultsFileName = 'all_results2012_163.json';
+  allResults.push(...jsonArray);
 
-    }
-    allResults.push(...jsonArray);
-    const allResultsFileName = 'all_results2020.json';
+  try {
     await fs.writeFile(allResultsFileName, JSON.stringify(allResults, null, 2));
+    console.log('File written successfully:', allResultsFileName);
+  } catch (error) {
+    console.error('Error writing to file:', error);
+  } finally {
     return jsonArray;
+  }
 };
 
 module.exports = makeApiRequests;
