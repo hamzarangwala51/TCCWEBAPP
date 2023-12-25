@@ -71,14 +71,15 @@ app.get('/results', async (req, res) => {
                let json =[];
                let url =[];
 
-                    for(let i=163;i<326;i++){
+                    for(let i=0;i<284;i++){
                         cit.push(un_officialData[i]);
                         json.push(all_data[i]);
                         url.push(urlForCase[i]);
                         }
-                        // cit.push(un_officialData[218]);
-                        // json.push(all_data[218]);
-                        // url.push(urlForCase[218]);
+
+                        // cit.push(un_officialData[41]);
+                        // json.push(all_data[41]);
+                        // url.push(urlForCase[41]);
                 
                 //     summarizeText(cit[0])
                 //    .then((summary) => console.log(summary))
@@ -131,44 +132,44 @@ app.get('/results', async (req, res) => {
                     
                         
 
-                //let jsonArray =
-                    
-                //     let jsonArray = await makeApiRequests(cit);
-                    
-                //     for(const jsonObject of jsonArray){
-                // // Access the values using the keys
-                //         const outcome = jsonObject["Outcome of the Case"];
-                //         const caseDuration = jsonObject["How many years did the case take"];
-                //         const appellantGender = jsonObject["Gender of the Appellant"];
-                //         const judgeGender = jsonObject["Gender of the Judge"];
-                //         const issueType = jsonObject["Type of issue"];
-                //         const taxpayerType = jsonObject["Type of taxpayer"];
-                //         const InitialOfAppellant = jsonObject["Initials of the Appellant"];
-                //         const InitialOfJudge = jsonObject["Initials of the Judge"];
+                 //let jsonArray = 
 
-                //         console.log("Outcome:",outcome);
-                //         console.log("Case Duration:", caseDuration);
-                //         console.log("Appellant Gender:", appellantGender);
-                //         console.log("Judge Gender:", judgeGender);
-                //         console.log("Issue Type:", issueType);
-                //         console.log("Taxpayer Type:", taxpayerType);
-                //         console.log("Initial of Appelant:", InitialOfAppellant);
-                //         console.log("Initial of Judge:", InitialOfJudge)
+                   let jsonArray = await makeApiRequests(cit);
+                    
+                    for(const jsonObject of jsonArray){
+                // Access the values using the keys
+                        const outcome = jsonObject["Outcome of the Case"];
+                        const caseDuration = jsonObject["How many years did the case take"];
+                        const appellantGender = jsonObject["Gender of the Appellant"];
+                        const judgeGender = jsonObject["Gender of the Judge"];
+                        const issueType = jsonObject["Type of issue"];
+                        const taxpayerType = jsonObject["Type of taxpayer"];
+                        const InitialOfAppellant = jsonObject["Initials of the Appellant"];
+                        const InitialOfJudge = jsonObject["Initials of the Judge"];
+
+                        console.log("Outcome:",outcome);
+                        console.log("Case Duration:", caseDuration);
+                        console.log("Appellant Gender:", appellantGender);
+                        console.log("Judge Gender:", judgeGender);
+                        console.log("Issue Type:", issueType);
+                        console.log("Taxpayer Type:", taxpayerType);
+                        console.log("Initial of Appelant:", InitialOfAppellant);
+                        console.log("Initial of Judge:", InitialOfJudge)
 
             
-                //         outComeOfCase.push(outcome);
-                //         yeartheCasetook.push(caseDuration);
-                //         GenderofAppellant.push(appellantGender);
-                //         GenderofJudge.push(judgeGender);
-                //         typeOfIssue.push(issueType);
-                //         typeofTaxPayer.push(taxpayerType);
-                //         InitalofAp.push(InitialOfAppellant);
-                //         InitialofJud.push(InitialOfJudge);
+                        outComeOfCase.push(outcome);
+                        yeartheCasetook.push(caseDuration);
+                        GenderofAppellant.push(appellantGender);
+                        GenderofJudge.push(judgeGender);
+                        typeOfIssue.push(issueType);
+                        typeofTaxPayer.push(taxpayerType);
+                        InitalofAp.push(InitialOfAppellant);
+                        InitialofJud.push(InitialOfJudge);
                    
                    
-                //          } 
-                //     console.log(ResponseFromAi);    
-                //     ResponseFromAi = [...ResponseFromAi, ...jsonArray];
+                         } 
+                    console.log(ResponseFromAi);    
+                    ResponseFromAi = [...ResponseFromAi, ...jsonArray];
                 // If you want to log or do something with ResponseFromAi
                
                 

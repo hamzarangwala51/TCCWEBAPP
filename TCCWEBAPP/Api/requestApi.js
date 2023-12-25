@@ -16,8 +16,8 @@ const makeApiRequests = async (cit) => {
       "Gender of the Appellant": "MALE",
       "Gender of the Judge": "MALE",
       "Type of issue": "Not known",
-      "Initials of the Appellant": "C.W.A",
-      "Initials of the Judge": "D.W.B",
+      "Initials of the Appellant": "H.A.M",
+      "Initials of the Judge": "Found Not",
     };
     try {
       const response = await generateResponse(InputArray);
@@ -32,7 +32,7 @@ const makeApiRequests = async (cit) => {
     }
   }
 
-  const allResultsFileName = 'all_results2012_163.json';
+  const allResultsFileName = 'all_results2009_504.json';
   allResults.push(...jsonArray);
 
   try {
