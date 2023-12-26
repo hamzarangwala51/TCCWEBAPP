@@ -32,7 +32,7 @@ const makeApiRequests = async (cit) => {
     }
   }
 
-  const allResultsFileName = 'all_results2009_504.json';
+  const allResultsFileName = 'all_results2004_361.json';
   allResults.push(...jsonArray);
 
   try {

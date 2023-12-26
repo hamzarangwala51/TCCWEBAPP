@@ -71,12 +71,13 @@ app.get('/results', async (req, res) => {
                let json =[];
                let url =[];
 
-                    for(let i=0;i<284;i++){
+                    for(let i=0;i<361;i++){
                         cit.push(un_officialData[i]);
                         json.push(all_data[i]);
                         url.push(urlForCase[i]);
                         }
-
+            
+                    
                         // cit.push(un_officialData[41]);
                         // json.push(all_data[41]);
                         // url.push(urlForCase[41]);
@@ -132,12 +133,13 @@ app.get('/results', async (req, res) => {
                     
                         
 
-                 //let jsonArray = 
+                  //let jsonArray = 
+        
 
-                   let jsonArray = await makeApiRequests(cit);
-                    
-                    for(const jsonObject of jsonArray){
-                // Access the values using the keys
+                    let jsonArray = await makeApiRequests(cit);
+
+                     for (const jsonObject of jsonArray) {
+                        // Access the values using the keys
                         const outcome = jsonObject["Outcome of the Case"];
                         const caseDuration = jsonObject["How many years did the case take"];
                         const appellantGender = jsonObject["Gender of the Appellant"];
@@ -147,7 +149,7 @@ app.get('/results', async (req, res) => {
                         const InitialOfAppellant = jsonObject["Initials of the Appellant"];
                         const InitialOfJudge = jsonObject["Initials of the Judge"];
 
-                        console.log("Outcome:",outcome);
+                        console.log("Outcome:", outcome);
                         console.log("Case Duration:", caseDuration);
                         console.log("Appellant Gender:", appellantGender);
                         console.log("Judge Gender:", judgeGender);
@@ -156,7 +158,7 @@ app.get('/results', async (req, res) => {
                         console.log("Initial of Appelant:", InitialOfAppellant);
                         console.log("Initial of Judge:", InitialOfJudge)
 
-            
+
                         outComeOfCase.push(outcome);
                         yeartheCasetook.push(caseDuration);
                         GenderofAppellant.push(appellantGender);
@@ -165,14 +167,14 @@ app.get('/results', async (req, res) => {
                         typeofTaxPayer.push(taxpayerType);
                         InitalofAp.push(InitialOfAppellant);
                         InitialofJud.push(InitialOfJudge);
-                   
-                   
-                         } 
-                    console.log(ResponseFromAi);    
+
+
+                    }
+                    console.log(ResponseFromAi);
                     ResponseFromAi = [...ResponseFromAi, ...jsonArray];
                 // If you want to log or do something with ResponseFromAi
                
-                
+
                     //    console.log(ResponseFromAi[0]);
                     
 
