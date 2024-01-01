@@ -9,9 +9,8 @@ const app = express();
 const port = 3000;
 const ejs = require('ejs');
 const { match } = require('assert');
-
-const summarizeText = require('./summaryFunc');
-const countTokens = require('./Api/gptModel.js');
+const readJSONFilesFromFolder = require('./resultsJson/result.js');
+const findConsecutiveNotFoundIndex = require('./consecutiveArray.js');
 let uploadedFile;
 let storedData;
 
@@ -46,7 +45,7 @@ app.get('/loading', (req, res) => {
 
 const storeUploadedFile = (req, res, next) => {
     uploadedFile = req.file;
-    next(); // Continue to the next middleware or route
+    next(); // Continue to the next middleware or route 
 };
 app.post('/upload', upload.single('jsonFile'),storeUploadedFile, (req, res) => {
     if (!req.file) {
@@ -61,117 +60,12 @@ app.get('/results', async (req, res) => {
         return res.status(400).send('No file uploaded.');
     }
     try {
-        const all_data = JSON.parse(uploadedFile.buffer.toString());
+        const json = JSON.parse(uploadedFile.buffer.toString());
         console.log(uploadedFile.originalname);
-            const jsonDataHandler = new JsonDataHandler(all_data);
-                let ResponseFromAi=[];
-               let un_officialData=jsonDataHandler.printSpecificItems();
-                let urlForCase=jsonDataHandler.printSpecificNames(); 
-               let cit=[];
-               let json =[];
-               let url =[];
+            const jsonDataHandler = new JsonDataHandler(json);
+           // let json =[];
+            //json.push(all_data);
 
-                    for(let i=0;i<361;i++){
-                        cit.push(un_officialData[i]);
-                        json.push(all_data[i]);
-                        url.push(urlForCase[i]);
-                        }
-            
-                    
-                        // cit.push(un_officialData[41]);
-                        // json.push(all_data[41]);
-                        // url.push(urlForCase[41]);
-                
-                //     summarizeText(cit[0])
-                //    .then((summary) => console.log(summary))
-                //    .catch((error) => console.error('Error:', error));
-                const InitalofAp =[];
-                const InitialofJud = [];
-                const typeOfIssue =[];
-                const GenderofAppellant=[];
-                const GenderofJudge=[];
-                const outComeOfCase=[];
-                const yeartheCasetook=[];
-                const typeofTaxPayer=[];
-                const url_case=[];
-
-                url.forEach((item)=>{
-                    url_case.push(item);
-                })
-                
-
-                // const Limitarray =[]; 
-                // function countTokenAmount(text) {
-                //     const tokens_per_word = 1.3;
-                //     let word_count = 0;
-                  
-                //     // Check if text is a string or an array of words
-                //     if (typeof text === 'string') {
-                //       // Split the string into words
-                //       word_count = text.split(/\s+/).length;
-                //     } else if (Array.isArray(text)) {
-                //       // Use the length of the array as the word count
-                //       word_count = text.length;
-                //     }
-                  
-                //     const estimated_tokens = word_count * tokens_per_word;
-                //     return estimated_tokens;
-                //   }
-                //     json.forEach((text,index)=>{                        
-                //             if (text.unofficial_text && text.unofficial_text[index] !== undefined) {
-                //                 let res = countTokenAmount(text.unofficial_text);
-                //                 if (res < 40000) {
-                //                     return Limitarray.push("Less than Limit");
-                //                   } else {
-                //                     return Limitarray.push("More than Limit");
-                //                   }                
-                //                 }else {
-                //                     // Handle the case when unofficial_text or its index is undefined
-                //                     console.error(`unofficial_text[${index}] is undefined for item:`, text.unofficial_text);
-                //                 }
-                //         });
-                    
-                        
-
-                  //let jsonArray = 
-        
-
-                    let jsonArray = await makeApiRequests(cit);
-
-                     for (const jsonObject of jsonArray) {
-                        // Access the values using the keys
-                        const outcome = jsonObject["Outcome of the Case"];
-                        const caseDuration = jsonObject["How many years did the case take"];
-                        const appellantGender = jsonObject["Gender of the Appellant"];
-                        const judgeGender = jsonObject["Gender of the Judge"];
-                        const issueType = jsonObject["Type of issue"];
-                        const taxpayerType = jsonObject["Type of taxpayer"];
-                        const InitialOfAppellant = jsonObject["Initials of the Appellant"];
-                        const InitialOfJudge = jsonObject["Initials of the Judge"];
-
-                        console.log("Outcome:", outcome);
-                        console.log("Case Duration:", caseDuration);
-                        console.log("Appellant Gender:", appellantGender);
-                        console.log("Judge Gender:", judgeGender);
-                        console.log("Issue Type:", issueType);
-                        console.log("Taxpayer Type:", taxpayerType);
-                        console.log("Initial of Appelant:", InitialOfAppellant);
-                        console.log("Initial of Judge:", InitialOfJudge)
-
-
-                        outComeOfCase.push(outcome);
-                        yeartheCasetook.push(caseDuration);
-                        GenderofAppellant.push(appellantGender);
-                        GenderofJudge.push(judgeGender);
-                        typeOfIssue.push(issueType);
-                        typeofTaxPayer.push(taxpayerType);
-                        InitalofAp.push(InitialOfAppellant);
-                        InitialofJud.push(InitialOfJudge);
-
-
-                    }
-                    console.log(ResponseFromAi);
-                    ResponseFromAi = [...ResponseFromAi, ...jsonArray];
                 // If you want to log or do something with ResponseFromAi
                
 
@@ -191,12 +85,10 @@ app.get('/results', async (req, res) => {
                 //       console.error('Error:', err);
                 //     }),
                 //      ];
-                let TestFirstName=jsonDataHandler.printSpecificItems();
-                let JudgeNames = jsonDataHandler.printSpecificItems();
-                    const extractedStrings = [];
+                    let extractedStrings = [];
                     const appeleantnames =[];
-                    const yearOfCase =[];
-                    const Judgnames = [];
+                    let yearOfCase =[];
+                    let Judgnames = [];
                     const Intials =[];
                     const pattern = /BETWEEN:\s*\n(.+?),/;
                     const patternTEST = /BETWEEN:\s*\n(.*?)\n/;
@@ -241,27 +133,175 @@ app.get('/results', async (req, res) => {
                             //     //console.log(text.name.toString());
                             // }
                        });
+                       json.forEach((item)=>{
+                        const year = item.year.toString();
+                        if(item.year!=null){
+                        yearOfCase.push(year);
+                    }else{
+                        yearOfCase.push("Year not Found");
+                    }
+                });
+           
+                json.forEach((item)=>{
+                   const object=patternForJUD.exec(item.unofficial_text);  
+                   if(object!=null && object){  
+                   const match = object[0].match(JudPattern);
+                    if(match){
+                        //Judgnames.push(object[0]);
+                        Judgnames.push(match[3]);
+                    }else{
+                        const judgeNamePattern = /(?:By|Before): The Honourable (.*?)\s*,/;
+                            const match1=object[1].match(judgeNamePattern);
+                            if (match1 && match1[1]) {
+                                Judgnames.push(match1[1]);
+                        }else{
+                            Judgnames.push("JudgeName Not Found in Pattern also ")
+                    }
+                       // console.log(item.name.toString());
+                    }
+                }else{
+                    const obj =item.unofficial_text.match(patternifNamenotFound);
+                    if(obj){
+                        Judgnames.push(obj[2]);
+                    }
+                    else{
+                        const mat = item.unofficial_text.match(judgeNamePattern);
+                        if(mat){
+                            Judgnames.push(mat[2].toString().substring(0,38))
+                        }else{
+                             Judgnames.push("JudgeName Not Found in Pattern also ")
+                        }
+                        //Judgnames.push("JudgeName Not Found in Pattern also ")
+                    }
+                    //Judgnames.push("JudgeName Not Found in Object")
+                }
+              
+              });
 
-                       let consecutiveNotFoundCount = 0;
-                        let lastItemLengthWithAName = 0;
+                       const resultIndex = findConsecutiveNotFoundIndex(extractedStrings);
+  
+                       if (resultIndex !== -1) {
+        
+                         console.log(`Index one position before consecutive "Not found": ${resultIndex}`);
 
-                        // Iterate through the array
-                        for (let i = 0; i < extractedStrings.length; i++) {
-                        if (extractedStrings[i].includes("Not Found")) {
-                            // If "Not Found" is encountered, increment the count
-                            consecutiveNotFoundCount++;
-                        }
-                        else {
-                            // If a name is encountered, reset the count and store the length
-                            consecutiveNotFoundCount = 0;
-                            lastItemLengthWithAName++;
-                        }
+                        let ResponseFromAi=[];
+                        let un_officialData=jsonDataHandler.printSpecificItems();
+                        let urlForCase=jsonDataHandler.printSpecificNames(); 
+                        let cit=[];
+                        let url =[];
 
-                        // Check if more than 10 consecutive "Not Found" items
-                        if (consecutiveNotFoundCount > 10) {
-                            break;  // Exit the loop if the condition is met
-                        }
-                        }
+                        
+
+                             for(let i=0;i<=resultIndex;i++){
+                                 cit.push(un_officialData[i]);
+                                 url.push(urlForCase[i]);
+            
+                                 }
+                            
+
+                             
+                                 // cit.push(un_officialData[387]);
+                                 // json.push(all_data[387]);
+                                 // url.push(urlForCase[387]);
+                         
+                         //     summarizeText(cit[0])
+                         //    .then((summary) => console.log(summary))
+                         //    .catch((error) => console.error('Error:', error));
+                         const InitalofAp =[];
+                         const InitialofJud = [];
+                         const typeOfIssue =[];
+                         const GenderofAppellant=[];
+                         const GenderofJudge=[];
+                         const outComeOfCase=[];
+                         const yeartheCasetook=[];
+                         const typeofTaxPayer=[];
+                         let url_case=[];
+         
+                         url.forEach((item)=>{
+                            url_case.push(item);
+                        })
+                         
+         
+                         // const Limitarray =[]; 
+                         // function countTokenAmount(text) {
+                         //     const tokens_per_word = 1.3;
+                         //     let word_count = 0;
+                           
+                         //     // Check if text is a string or an array of words
+                         //     if (typeof text === 'string') {
+                         //       // Split the string into words
+                         //       word_count = text.split(/\s+/).length;
+                         //     } else if (Array.isArray(text)) {
+                         //       // Use the length of the array as the word count
+                         //       word_count = text.length;
+                         //     }
+                           
+                         //     const estimated_tokens = word_count * tokens_per_word;
+                         //     return estimated_tokens;
+                         //   }
+                             // json.forEach((text,index)=>{                        
+                             //         if (text.unofficial_text && text.unofficial_text[index] !== undefined) {
+                             //             let res = countTokenAmount(text.unofficial_text);
+                             //             if (res < 40000) {
+                             //                 return Limitarray.push("Less than Limit");
+                             //               } else {
+                             //                 return Limitarray.push("More than Limit");
+                             //               }                
+                             //             }else {
+                             //                 // Handle the case when unofficial_text or its index is undefined
+                             //                 console.error(`unofficial_text[${index}] is undefined for item:`, text.unofficial_text);
+                             //             }
+                             //     });
+                             
+                         const fileName = uploadedFile.originalname;       
+                         const folderName = 'resultsJSON';
+                         let jsonArray = readJSONFilesFromFolder(folderName,fileName);
+                         jsonArray = jsonArray.flat();
+                        // console.log(jsonArray);
+         
+                           //let jsonArray = ;
+                 
+         
+                             //let jsonArray = await makeApiRequests(cit);
+             
+                              for (const jsonObject of jsonArray) {
+                                 // Access the values using the keys
+                                 const outcome = jsonObject["Outcome of the Case"];
+                                 const caseDuration = jsonObject["How many years did the case take"];
+                                 const appellantGender = jsonObject["Gender of the Appellant"];
+                                 const judgeGender = jsonObject["Gender of the Judge"];
+                                 const issueType = jsonObject["Type of issue"];
+                                 const taxpayerType = jsonObject["Type of taxpayer"];
+                                 const InitialOfAppellant = jsonObject["Initials of the Appellant"];
+                                 const InitialOfJudge = jsonObject["Initials of the Judge"];
+         
+                                 console.log("Outcome:", outcome);
+                                 console.log("Case Duration:", caseDuration);
+                                 console.log("Appellant Gender:", appellantGender);
+                                 console.log("Judge Gender:", judgeGender);
+                                 console.log("Issue Type:", issueType);
+                                 console.log("Taxpayer Type:", taxpayerType);
+                                 console.log("Initial of Appelant:", InitialOfAppellant);
+                                 console.log("Initial of Judge:", InitialOfJudge)
+         
+         
+                                 outComeOfCase.push(outcome);
+                                 yeartheCasetook.push(caseDuration);
+                                 GenderofAppellant.push(appellantGender);
+                                 GenderofJudge.push(judgeGender);
+                                 typeOfIssue.push(issueType);
+                                 typeofTaxPayer.push(taxpayerType);
+                                 InitalofAp.push(InitialOfAppellant);
+                                 InitialofJud.push(InitialOfJudge);
+         
+         
+                             }
+                            // console.log(ResponseFromAi);
+                             ResponseFromAi = [...ResponseFromAi, ...jsonArray];
+
+
+
+
                         //console.log(lastItemLengthWithAName);
                     
                     //    TestFirstName.forEach((text) => {
@@ -275,50 +315,7 @@ app.get('/results', async (req, res) => {
                     //         }
                     //     }
                     //   });
-                            json.forEach((item)=>{
-                                    const year = item.year.toString();
-                                    if(item.year!=null){
-                                    yearOfCase.push(year);
-                                }else{
-                                    yearOfCase.push("Year not Found");
-                                }
-                            });
-                       
-                            json.forEach((item)=>{
-                               const object=patternForJUD.exec(item.unofficial_text);  
-                               if(object!=null && object){  
-                               const match = object[0].match(JudPattern);
-                                if(match){
-                                    //Judgnames.push(object[0]);
-                                    Judgnames.push(match[3]);
-                                }else{
-                                    const judgeNamePattern = /(?:By|Before): The Honourable (.*?)\s*,/;
-                                        const match1=object[1].match(judgeNamePattern);
-                                        if (match1 && match1[1]) {
-                                            Judgnames.push(match1[1]);
-                                    }else{
-                                        Judgnames.push("JudgeName Not Found in Pattern also ")
-                                }
-                                   // console.log(item.name.toString());
-                                }
-                            }else{
-                                const obj =item.unofficial_text.match(patternifNamenotFound);
-                                if(obj){
-                                    Judgnames.push(obj[2]);
-                                }
-                                else{
-                                    const mat = item.unofficial_text.match(judgeNamePattern);
-                                    if(mat){
-                                        Judgnames.push(mat[2].toString().substring(0,38))
-                                    }else{
-                                         Judgnames.push("JudgeName Not Found in Pattern also ")
-                                    }
-                                    //Judgnames.push("JudgeName Not Found in Pattern also ")
-                                }
-                                //Judgnames.push("JudgeName Not Found in Object")
-                            }
                           
-                          });
                           //console.log(extractedStrings.length.toString());
                           //console.log(corpnames.length);
                           //console.log(cit.length);
@@ -376,14 +373,20 @@ app.get('/results', async (req, res) => {
                                                               
                                      // console.log(Intials.toString());   
 
-                                    
+                                        extractedStrings=extractedStrings.slice(0,resultIndex+1);
+                                        Judgnames=Judgnames.slice(0,resultIndex+1);
+                                        yearOfCase =yearOfCase.slice(0,resultIndex+1);
                                         const excelFileName = getExcelFunc(Judgnames, yearOfCase, extractedStrings, outComeOfCase, typeOfIssue, GenderofAppellant, GenderofJudge,Intials,yeartheCasetook,typeofTaxPayer,url_case,InitalofAp,InitialofJud);
-                                        console.log(ResponseFromAi);
+                                        //console.log(ResponseFromAi);
                                         storedData = {
                                             extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer
                                         };
                                         const temp = { extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer };
                                         res.redirect(`/download?data=${temp}`);
+
+                                    } else {
+                                        console.log("No consecutive 'Not found' found.");
+                                      }
         
 
     } catch (error) {
@@ -391,10 +394,6 @@ app.get('/results', async (req, res) => {
         res.status(500).send('Error parsing JSON.');
     }
     
-    // You can render your results page here and pass any required data
-    // Example: res.render('results', { data: resultsData });
-    // Adjust this based on your actual results handling logic
-    // You can also send a download link to the Excel file on this page
 });
 
 app.get('/download', (req, res) => {

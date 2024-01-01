@@ -139,45 +139,4 @@ const getOpenAIResponse = async (content, systemMessage, maxTokens) => {
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-
-
-const processLargeInput = async (inputText,maxTokens) => {
-  // Split the text into chunks that are less than the token limit
-  // Placeholder for actual token-based splitting
-  const tokensPerRequest = 16000;
-  const textChunks = inputText.match(new RegExp(`.{1,${tokensPerRequest}}`, 'g'));
-  
-  let responses = [];
-  let updatedSystemMessage = { ...systemMessage };
-
-  for (const chunk of textChunks) {
-    const response = await getOpenAIResponse(chunk, updatedSystemMessage,maxTokens);
-    responses.push(response);
-    updatedSystemMessage.content = response; 
-    // Update the system message for the next chunk
-  }
-
-  return responses.join(' ');
-};
-
-const processLargeInputText = async (inputText, maxTokens) => {
-  const JSONFormat = {
-    "Outcome of the Case": "Losing",
-    "How many years did the case take": "7",
-    "Gender of the Appellant": "Female",
-    "Gender of the Judge": "Female",
-    "Type of issue": "Income Tax",
-    'Type of taxpayer': 'Corporation',
-    "Initials of the Appellant": "C.W.D",
-    "Initials of the Judge": "D.W.B"
-  };
-
-  let Result =JSON.stringify(JSONFormat);
-
-  // Now JSONFormat is a JavaScript object representing the JSON data.
-
-  return Result;
-};
-
-
 module.exports = generateResponse;
