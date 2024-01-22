@@ -79,8 +79,6 @@
     <img src="/images/ChatGPT-Logo-PNG-1.png" alt="Image" width="50" height="auto">
     Response from the OpenAI API :
 </h2>
-    <!-- <pre><%= JSON.stringify(ResponseFromAi, null, 2) %></pre> -->
-
     <div class="container">
         <div class="div9">
             <div class="bottomPadding">
@@ -343,6 +341,30 @@
       </tbody>
   </table>
 </div>
+
+
+<div class="div5">
+    <div class="bottomPadding">
+        <h1>Issue:</h1>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Yes/No</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%  IssueCount.forEach(function(item, index) { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= item.toString() %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
         <!-- Repeat the same structure for other sections -->
     </div>
 

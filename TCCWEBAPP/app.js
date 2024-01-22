@@ -389,10 +389,8 @@ app.get('/results', async (req, res) => {
                                         IssueCount = IssueCount.slice(0,resultIndex+1);
                                         const excelFileName = getExcelFunc(Judgnames, yearOfCase, extractedStrings, outComeOfCase, typeOfIssue, GenderofAppellant, GenderofJudge,Intials,yeartheCasetook,typeofTaxPayer,url_case,InitalofAp,InitialofJud,IssueCount);
                                         //console.log(ResponseFromAi);
-                                        storedData = {
-                                            extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer
-                                        };
-                                        const temp = { extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer };
+                                        storedData = {extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer,IssueCount};
+                                        const temp = { extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer,IssueCount };
                                         res.redirect(`/download?data=${temp}`);
 
                                     } else {
@@ -408,6 +406,7 @@ app.get('/results', async (req, res) => {
 });
 
 app.get('/download', (req, res) => {
+    //console.log(storedData);
     data = storedData||{}
     // You can use storedData or temp, depending on your requirements
     res.render('download', data);
