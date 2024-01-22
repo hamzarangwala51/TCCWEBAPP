@@ -5,6 +5,7 @@ const JsonDataHandler = require('./jsonModel');
 const makeApiRequests = require('./Api/requestApi.js');
 const compareInitials = require('./compareIntials.js');
 const getExcelFunc = require('./excel.js');
+const checkForIssues = require('./issuesFunc.js');
 const app = express();
 const port = 3000;
 const ejs = require('ejs');
@@ -116,6 +117,15 @@ app.get('/results', async (req, res) => {
 
                         // Use regular expressions to find and store matching strings in the array
                        // const matches = TestFirstName[0].match(pattern);
+                       let IssueCount = [];
+                       json.forEach((text)=>{
+                                      let issueCounter=checkForIssues(text.unofficial_text);
+                                      IssueCount.push(issueCounter);
+                                     
+                               });
+
+
+
                        json.forEach((text)=>{
                             const match = text.unofficial_text.match(patternTEST);
                             if (match) {
@@ -182,7 +192,7 @@ app.get('/results', async (req, res) => {
   
                        if (resultIndex !== -1) {
         
-                         console.log(`Index one position before consecutive "Not found": ${resultIndex}`);
+                         //console.log(`Index one position before consecutive "Not found": ${resultIndex}`);
 
                         let ResponseFromAi=[];
                         let un_officialData=jsonDataHandler.printSpecificItems();
@@ -275,14 +285,14 @@ app.get('/results', async (req, res) => {
                                  const InitialOfAppellant = jsonObject["Initials of the Appellant"];
                                  const InitialOfJudge = jsonObject["Initials of the Judge"];
          
-                                 console.log("Outcome:", outcome);
-                                 console.log("Case Duration:", caseDuration);
-                                 console.log("Appellant Gender:", appellantGender);
-                                 console.log("Judge Gender:", judgeGender);
-                                 console.log("Issue Type:", issueType);
-                                 console.log("Taxpayer Type:", taxpayerType);
-                                 console.log("Initial of Appelant:", InitialOfAppellant);
-                                 console.log("Initial of Judge:", InitialOfJudge)
+                                //  console.log("Outcome:", outcome);
+                                //  console.log("Case Duration:", caseDuration);
+                                //  console.log("Appellant Gender:", appellantGender);
+                                //  console.log("Judge Gender:", judgeGender);
+                                //  console.log("Issue Type:", issueType);
+                                //  console.log("Taxpayer Type:", taxpayerType);
+                                //  console.log("Initial of Appelant:", InitialOfAppellant);
+                                //  console.log("Initial of Judge:", InitialOfJudge)
          
          
                                  outComeOfCase.push(outcome);
@@ -376,7 +386,8 @@ app.get('/results', async (req, res) => {
                                         extractedStrings=extractedStrings.slice(0,resultIndex+1);
                                         Judgnames=Judgnames.slice(0,resultIndex+1);
                                         yearOfCase =yearOfCase.slice(0,resultIndex+1);
-                                        const excelFileName = getExcelFunc(Judgnames, yearOfCase, extractedStrings, outComeOfCase, typeOfIssue, GenderofAppellant, GenderofJudge,Intials,yeartheCasetook,typeofTaxPayer,url_case,InitalofAp,InitialofJud);
+                                        IssueCount = IssueCount.slice(0,resultIndex+1);
+                                        const excelFileName = getExcelFunc(Judgnames, yearOfCase, extractedStrings, outComeOfCase, typeOfIssue, GenderofAppellant, GenderofJudge,Intials,yeartheCasetook,typeofTaxPayer,url_case,InitalofAp,InitialofJud,IssueCount);
                                         //console.log(ResponseFromAi);
                                         storedData = {
                                             extractedStrings, cit, JsonFilename: uploadedFile.originalname, Judgnames, yearOfCase, ResponseFromAi, excelFileName,InitalofAp,InitialofJud, Intials, typeOfIssue, GenderofAppellant, GenderofJudge, outComeOfCase,yeartheCasetook,typeofTaxPayer

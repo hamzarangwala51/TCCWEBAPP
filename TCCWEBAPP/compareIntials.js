@@ -1,5 +1,5 @@
 function compareInitials(taxpayerName,judgeName) {
-    console.log(taxpayerName);
+    //console.log(taxpayerName);
     if(taxpayerName && judgeName != "Not specified"){
     const taxPayerName = taxpayerName.replace(/\.*$/, '');
     let taxpayerInitials=[];
@@ -14,7 +14,7 @@ function compareInitials(taxpayerName,judgeName) {
       last: taxPayerName[taxPayerName.length-1],
     };
  // }
-    console.log(judgeName);
+    //console.log(judgeName);
     //if(!judgeName.includes("JudgeName Not Found in Pattern also")){
     const JudgeNames = judgeName.replace(/\.*$/, '');;
    // let judgeInitials = null;
@@ -38,10 +38,10 @@ function compareInitials(taxpayerName,judgeName) {
     //         last: JudgeNames[JudgeNames.length-1][0],
     //       };
     // }
-    console.log(taxpayerInitials.first);
-    console.log(taxpayerInitials.last);
-    console.log(judgeInitials.first);
-    console.log(judgeInitials.last);
+    // console.log(taxpayerInitials.first);
+    // console.log(taxpayerInitials.last);
+    // console.log(judgeInitials.first);
+    // console.log(judgeInitials.last);
 
     if (
       taxpayerInitials.first === judgeInitials.first &&
